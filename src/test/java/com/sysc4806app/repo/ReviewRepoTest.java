@@ -33,9 +33,11 @@ public class ReviewRepoTest {
 
     @BeforeAll
     public void beforeAll() {
+        productRepo.deleteAll();
         prod1 = new Product("www.joeiscool.com", "JOMJOMS","you already know.");
         prod2 = new Product("www.soup.com", "tacos","yum tum");
-
+        //prod1.setId(1L);
+        //prod2.setId(2L);
         review1 = new Review(5,"good",prod1);
         review2 = new Review(3, "avg",prod1);
         review3 = new Review(3, "avg",prod2);
@@ -50,9 +52,13 @@ public class ReviewRepoTest {
     @Test
     public void findByProductTest(){
         Product test =productRepo.findById(1);
+        List<Review> reviews = reviewRepo.findAll();
         List<Review> actual = reviewRepo.findByProduct(test);
-        assertTrue(actual.contains(review1));
-        assertTrue(actual.contains(review2));
+        for(Review r : reviews){
+            if (r.getProduct().equals(test)){
+                assertTrue(actual.contains(r));
+            }
+        }
     }
 
     @Test
