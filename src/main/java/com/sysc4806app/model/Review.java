@@ -5,6 +5,8 @@ import javax.persistence.*;
 @Entity
 public class Review {
 
+    public static final int MAX_RATING = 5;
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -31,6 +33,9 @@ public class Review {
     }
 
     public void setRating(int rating) {
+        if (rating < 0 || rating > MAX_RATING) {
+            throw new IllegalArgumentException("Rating must be between 0 and " + Review.MAX_RATING + ", inclusive.");
+        }
         this.rating = rating;
     }
 
@@ -63,8 +68,8 @@ public class Review {
 
         boolean b1 =this.getProduct().equals(r.getProduct());
         boolean b2 =this.getRating() == r.getRating();
-        boolean b3 =this.getText()==r.getText();
-        boolean b4 =this.getId() == r.getId();
+        boolean b3 =this.getText().equals(r.getText());
+        boolean b4 =this.getId().equals(r.getId());
         return  b1 && b2 && b3 &&  b4;
     }
     @Override
