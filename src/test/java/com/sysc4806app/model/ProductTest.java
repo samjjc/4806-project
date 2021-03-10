@@ -10,6 +10,8 @@ class ProductTest {
     private static String link;
     private static String name;
     private static String description;
+    private static ProductType type;
+    private static ProductChain chain;
     private static Product product;
 
     @BeforeAll
@@ -17,7 +19,7 @@ class ProductTest {
         link = "www.link.com";
         name = "Orange";
         description = "It's orange.";
-        product = new Product(link, name, description);
+        product = new Product(link, name, description, type, chain);
     }
     @Test
     void getSetLink() {

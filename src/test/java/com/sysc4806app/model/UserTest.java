@@ -33,7 +33,7 @@ class UserTest {
     @Test
     void addReviews() {
         assertTrue(guy.getReviews().isEmpty());
-        Product product = new Product("www.link.com", "Orange", "It's orange.");
+        Product product = new Product("www.link.com", "Orange", "It's orange.", ProductType.SDW, ProductChain.SWY);
         Review review = new Review(5, "This product is very good", product);
         guy.addReview(review);
         assertFalse(guy.getReviews().isEmpty());

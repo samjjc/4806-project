@@ -11,13 +11,22 @@ public class Product {
     private String name;
     private String description;
 
-    public Product(){}
+    @Enumerated(EnumType.STRING)
+    private ProductType type;
 
-    public Product(String link, String name, String description) {
+    @Enumerated(EnumType.STRING)
+    private ProductChain chain;
+
+    public Product() {}
+
+    public Product(String link, String name, String description, ProductType type, ProductChain chain) {
         this.link = link;
         this.name = name;
         this.description = description;
+        this.type = type;
+        this.chain = chain;
     }
+
     public Long getId() { return id; }
 
     public void setId(Long id) { this.id = id; }
@@ -46,6 +55,14 @@ public class Product {
         this.description = description;
     }
 
+    public ProductType getType() { return type; }
+
+    public void setType(ProductType type) { this.type = type; }
+
+    public ProductChain getChain() { return chain; }
+
+    public void setChain(ProductChain chain) { this.chain = chain; }
+
     @Override
     public boolean equals(Object o){
         if (o == this) {
@@ -57,7 +74,8 @@ public class Product {
 
         Product p = (Product) o;
 
-        return this.getDescription() == p.getDescription() && this.getLink() == p.getLink()
-                && this.getName()==p.getName() && this.getId() == p.getId();
+        return this.getDescription().equals(p.getDescription()) && this.getLink().equals(p.getLink())
+                && this.getName().equals(p.getName()) && this.getId().equals(p.getId())
+                && this.getType().equals(p.getType()) && this.getChain().equals(p.getChain());
     }
 }

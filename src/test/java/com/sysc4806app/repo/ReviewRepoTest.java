@@ -1,6 +1,8 @@
 package com.sysc4806app.repo;
 
 import com.sysc4806app.model.Product;
+import com.sysc4806app.model.ProductChain;
+import com.sysc4806app.model.ProductType;
 import com.sysc4806app.model.Review;
 import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.ReviewRepo;
@@ -34,10 +36,8 @@ public class ReviewRepoTest {
     @BeforeAll
     public void beforeAll() {
         productRepo.deleteAll();
-        prod1 = new Product("www.joeiscool.com", "JOMJOMS","you already know.");
-        prod2 = new Product("www.soup.com", "tacos","yum tum");
-        //prod1.setId(1L);
-        //prod2.setId(2L);
+        prod1 = new Product("www.joeiscool.com", "JOMJOMS","you already know.", ProductType.CFE, ProductChain.TIM);
+        prod2 = new Product("www.soup.com", "tacos", "yum tum", ProductType.BGR, ProductChain.AW);
         review1 = new Review(5,"good",prod1);
         review2 = new Review(3, "avg",prod1);
         review3 = new Review(3, "avg",prod2);
