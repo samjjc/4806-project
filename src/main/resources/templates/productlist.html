@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<tbody>
+    <tr th:if="${products.empty}">
+        <td colspan="2"> No Products Available </td>
+    </tr>
+    <tr th:each="product : ${products}">
+        <td><h3 th:text="${product.name}"></h3></td>
+        <td>Link: <span th:text="${product.link}"></span></td><br/>
+        <td>Description: <span th:text="${product.description}"></span></td><br/>
+        <td>Product Type: <span th:text="${product.type.text}"></span></td><br/>
+        <td>Chain: <span th:text="${product.chain.text}"></span></td><br/>
+        <br/>
+    </tr>
+</tbody>
+</html>
