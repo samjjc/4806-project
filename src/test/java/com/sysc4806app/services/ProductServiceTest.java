@@ -1,6 +1,8 @@
 package com.sysc4806app.services;
 
 import com.sysc4806app.model.Product;
+import com.sysc4806app.model.ProductChain;
+import com.sysc4806app.model.ProductType;
 import com.sysc4806app.model.Review;
 import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.ReviewRepo;
@@ -30,7 +32,7 @@ public class ProductServiceTest {
 
     @Test
     public void TestCalculateRating() {
-        Product product = new Product("https://sysc4806app.herokuapp.com/", "Website", "The website.");
+        Product product = new Product("https://sysc4806app.herokuapp.com/", "Website", "The website.", ProductType.ICE, ProductChain.DQ);
         List<Review> reviews = new ArrayList<>();
         reviews.add(new Review(5, "This is a review.", product));
         reviews.add(new Review(3, "This is a review.", product));

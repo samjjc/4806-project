@@ -16,7 +16,7 @@ class ReviewTest {
     static void beforeAll() {
         rating = 5;
         text = "This product is very good";
-        product = new Product("www.link.com", "Orange", "It's orange.");
+        product = new Product("www.link.com", "Orange", "It's orange.", ProductType.ICE, ProductChain.DQ);
         review = new Review(rating, text, product);
     }
 
@@ -38,7 +38,7 @@ class ReviewTest {
 
     @Test
     void getSetProduct() {
-        Product newProduct = new Product("www.example.com", "Pear", "Not orange.");
+        Product newProduct = new Product("www.example.com", "Pear", "Not orange.", ProductType.PZA, ProductChain.PPZ);
         assertEquals(product, review.getProduct());
         review.setProduct(newProduct);
         assertEquals(newProduct, review.getProduct());
