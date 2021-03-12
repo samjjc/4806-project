@@ -35,9 +35,7 @@ public class ProductController {
     @GetMapping(path="/product/{id}")
     public String requestProduct(@PathVariable("id") long id, Model model) {
         Product product = productRepo.findById(id);
-        System.out.println(product);
         double rating = productService.calculateRating(id);
-        System.out.println(rating);
         model.addAttribute("rating", String.format("%.1f", rating));
         model.addAttribute("reviews", reviewRepo.findByProduct(product));
         model.addAttribute("product", product);
@@ -47,7 +45,6 @@ public class ProductController {
     @PostMapping("/product")
     public RedirectView submitNewProductForm(@ModelAttribute Product product) {
         productRepo.save(product);
-        System.out.println(product);
         return new RedirectView(String.format("/product/%s", product.getId()));
     }
 
