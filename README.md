@@ -24,6 +24,21 @@ Added the new feature
 
 This feature will allow users to add new products to the app.
 
+## Current State of Project
+
+With respect to the kanban, all milestone one issues have been completed:
+- app is configured to use travis CI, heroku, postgres
+- model objects are completed and stored in database
+- functionality for products is complete
+
+## Plan for Next Milestone
+
+Important features for the second milestone:
+- user login
+- review creation form
+- user following
+- content filtering
+
 ## Database Schema
 
 ![Database schema](databaseSchema.png)
