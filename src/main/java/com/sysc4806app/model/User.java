@@ -14,7 +14,6 @@ public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
     private String name;
 
     @OneToMany(cascade = CascadeType.PERSIST)
@@ -81,6 +80,6 @@ public class User {
 
         User u = (User) o;
 
-        return this.getName().equals(u.getName()) && this.getId().equals(u.getId());
+        return this.getName()==u.getName() && this.getId() == u.getId();
     }
 }
