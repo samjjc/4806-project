@@ -1,0 +1,88 @@
+.ffr-button {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	font-family: Source Sans Pro, Helvetica, Arial, sans-serif;
+	-webkit-transition: background-color .25s ease;
+	transition: background-color .25s ease;
+	cursor: pointer;
+	display: inline-block;
+	padding: 0 32px;
+	line-height: 16px;
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	font-size: 16px;
+	border-radius: 6px;
+	font-weight: 600;
+	outline: none;
+	border: 0;
+	text-align: center;
+	box-sizing: border-box;
+	box-shadow: none;
+	width: 80%;
+	max-width: 250px;
+	height: 40px;
+	margin: 0 auto;
+	color: #fff;
+	background: transparent;
+	background-color: #738678;
+	text-decoration: none;
+	vertical-align: middle
+}
+
+.ffr-button:hover {
+	background: transparent;
+	background-color: #A83731;
+	color: #fff
+}
+
+.ffr-button:active {
+	background-color: #A83731
+}
+
+.ffr-button:disabled,
+.ffr-button:disabled:hover {
+	cursor: not-allowed;
+	background-color: #e1e1e1;
+	color: #fff
+}
+
+@media (min-width:504px) {
+	.ffr-button {
+		width: auto
+	}
+}
+
+.ffr-button:focus {
+	box-shadow: 0 0 2px 1px #098ae4;
+	position: relative;
+	z-index: 4444
+}
+
+.ffr-button {
+	border: 1px solid #A83731;
+	color: #A83731;
+	background-color: #fff;
+	-webkit-transition: background-color .25s ease, color .25s ease, border-color .25s ease;
+	transition: background-color .25s ease, color .25s ease, border-color .25s ease
+}
+
+.ffr-button:hover {
+	border: 1px solid #A83731;
+	color: #fff;
+	background-color: #A83731
+}
+
+.ffr-button:disabled,
+.ffr-button:disabled:hover {
+	color: #e1e1e1;
+	background-color: #fff;
+	border-color: #e1e1e1
+}

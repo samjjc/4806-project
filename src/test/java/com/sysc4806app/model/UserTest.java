@@ -34,7 +34,7 @@ class UserTest {
     void addReviews() {
         assertTrue(guy.getReviews().isEmpty());
         Product product = new Product("www.link.com", "Orange", "It's orange.", ProductType.SDW, ProductChain.SWY);
-        Review review = new Review(5, "This product is very good", product);
+        Review review = new Review(5, "This product is very good", product, guy);
         guy.addReview(review);
         assertFalse(guy.getReviews().isEmpty());
         assertTrue(guy.getReviews().contains(review));

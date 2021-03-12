@@ -1,15 +1,8 @@
 package com.sysc4806app.repo;
 
-import com.sysc4806app.model.Product;
-import com.sysc4806app.model.Review;
 import com.sysc4806app.model.User;
-import com.sysc4806app.repos.ProductRepo;
-import com.sysc4806app.repos.ReviewRepo;
 import com.sysc4806app.repos.UserRepo;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -30,15 +23,9 @@ public class UserRepoTest {
 
     @BeforeAll
     public void beforeAll() {
-
-        user1 = new User("Joe");
-        user2 = new User("EIM");
-        user3 = new User("Ben");
-
-        userRepo.save(user1);
-        userRepo.save(user2);
-        userRepo.save(user3);
-
+        user1 = userRepo.save(new User("Joe"));
+        user2 = userRepo.save(new User("EIM"));
+        user3 = userRepo.save(new User("Ben"));
     }
 
     @Test
@@ -51,7 +38,7 @@ public class UserRepoTest {
 
     @Test
     public void findByIdTest(){
-        User actual = userRepo.findById(1);
+        User actual = userRepo.findById(user1.getId().longValue());
         assertEquals(user1,actual);
     }
 
@@ -61,4 +48,8 @@ public class UserRepoTest {
         assertTrue(actual.contains(user2));
     }
 
+    @AfterAll()
+    public void afterAll(){
+        userRepo.deleteAll();
+    }
 }
