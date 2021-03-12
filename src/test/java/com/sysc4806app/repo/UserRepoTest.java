@@ -1,20 +1,14 @@
 package com.sysc4806app.repo;
 
-import com.sysc4806app.model.Product;
-import com.sysc4806app.model.Review;
 import com.sysc4806app.model.User;
-import com.sysc4806app.repos.ProductRepo;
-import com.sysc4806app.repos.ReviewRepo;
 import com.sysc4806app.repos.UserRepo;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -27,10 +21,10 @@ public class UserRepoTest {
     private UserRepo userRepo;
 
     private User user1, user2, user3;
+    private Long  id1, id2, id3;
 
     @BeforeAll
     public void beforeAll() {
-
         user1 = new User("Joe");
         user2 = new User("EIM");
         user3 = new User("Ben");
@@ -38,6 +32,10 @@ public class UserRepoTest {
         userRepo.save(user1);
         userRepo.save(user2);
         userRepo.save(user3);
+
+        id1=user1.getId();
+        id2=user2.getId();
+        id3=user3.getId();
 
     }
 
@@ -51,14 +49,14 @@ public class UserRepoTest {
 
     @Test
     public void findByIdTest(){
-        User actual = userRepo.findById(1);
-        assertEquals(user1,actual);
+        Optional<User> actual = userRepo.findById(id1);
+        assertEquals(user1,actual.get());
     }
 
     @Test
     public void findByNameTest(){
-        List<User> actual = userRepo.findByName("EIM");
-        assertTrue(actual.contains(user2));
+        User actual = userRepo.findByName("EIM");
+        assertEquals(actual,(user2));
     }
 
 }
