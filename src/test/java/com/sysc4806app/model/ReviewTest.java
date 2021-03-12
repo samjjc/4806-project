@@ -11,13 +11,15 @@ class ReviewTest {
     private static int rating;
     private static String text;
     private static Product product;
+    private static User user;
 
     @BeforeAll
     static void beforeAll() {
         rating = 5;
         text = "This product is very good";
+        user = new User("tester");
         product = new Product("www.link.com", "Orange", "It's orange.", ProductType.ICE, ProductChain.DQ);
-        review = new Review(rating, text, product);
+        review = new Review(rating, text, product, user);
     }
 
     @Test

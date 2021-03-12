@@ -1,6 +1,5 @@
 package com.sysc4806app.model;
 
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,7 +15,7 @@ public class User {
     private Long id;
     private String name;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
     private Collection<Review> reviews;
 
     @OneToMany(cascade = CascadeType.PERSIST)
@@ -80,6 +79,6 @@ public class User {
 
         User u = (User) o;
 
-        return this.getName()==u.getName() && this.getId() == u.getId();
+        return this.getName().equals(u.getName()) && this.getId().equals(u.getId());
     }
 }

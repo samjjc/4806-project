@@ -12,16 +12,19 @@ public class Review {
     private Long id;
     private int rating;
     private String text;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private User user;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     private Product product;
 
     public Review(){}
 
-    public Review(int rating, String text, Product product) {
+    public Review(int rating, String text, Product product, User user) {
         this.rating = rating;
         this.text = text;
         this.product = product;
+        this.user = user;
     }
 
     public Long getId() { return id; }
@@ -54,6 +57,10 @@ public class Review {
     public void setProduct(Product product) {
         this.product = product;
     }
+
+    public User getUser() { return user; }
+
+    public void setUser(User user) { this.user = user; }
 
     @Override
     public boolean equals(Object o){

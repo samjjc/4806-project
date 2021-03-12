@@ -1,10 +1,9 @@
 package com.sysc4806app.configuration;
 
 import com.sysc4806app.model.PathVariableEnum;
-import org.springframework.beans.factory.ListableBeanFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
+import org.springframework.lang.NonNullApi;
 import org.springframework.stereotype.Component;
 
 /**
@@ -32,6 +31,7 @@ public class StringFieldToEnumConverterFactory implements ConverterFactory<Strin
         }
 
         @Override
+        @SuppressWarnings("all")
         public T convert(String source) {
             return PathVariableEnum.urlSegmentToEnum(this.enumType, source);
         }

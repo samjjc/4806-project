@@ -1,15 +1,10 @@
 package com.sysc4806app.repo;
 
-import com.sysc4806app.model.Product;
-import com.sysc4806app.model.ProductChain;
-import com.sysc4806app.model.ProductType;
-import com.sysc4806app.model.Review;
+import com.sysc4806app.model.*;
 import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.ReviewRepo;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import com.sysc4806app.repos.UserRepo;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,24 +24,23 @@ public class ReviewRepoTest {
     @Autowired
     private ProductRepo productRepo;
 
+    @Autowired
+    private UserRepo userRepo;
+
     private Review review1, review2, review3;
     private Product prod1, prod2;
+    private User user;
 
 
     @BeforeAll
     public void beforeAll() {
         productRepo.deleteAll();
-        prod1 = new Product("www.joeiscool.com", "JOMJOMS","you already know.", ProductType.CFE, ProductChain.TIM);
-        prod2 = new Product("www.soup.com", "tacos", "yum tum", ProductType.BGR, ProductChain.AW);
-        review1 = new Review(5,"good",prod1);
-        review2 = new Review(3, "avg",prod1);
-        review3 = new Review(3, "avg",prod2);
-        productRepo.save(prod1);
-        productRepo.save(prod2);
-        reviewRepo.save(review1);
-        reviewRepo.save(review2);
-        reviewRepo.save(review3);
-
+        user = userRepo.save(new User("tester"));
+        prod1 = productRepo.save(new Product("www.joeiscool.com", "JOMJOMS","you already know.", ProductType.CFE, ProductChain.TIM));
+        prod2 = productRepo.save(new Product("www.soup.com", "tacos", "yum tum", ProductType.BGR, ProductChain.AW));
+        review1 = reviewRepo.save(new Review(5,"good",prod1, user));
+        review2 = reviewRepo.save(new Review(3, "avg",prod1, user));
+        review3 = reviewRepo.save(new Review(3, "avg",prod2, user));
     }
 
     @Test
@@ -80,5 +74,12 @@ public class ReviewRepoTest {
         List<Review> actual = reviewRepo.findByRating(3);
         assertTrue(actual.contains(review2));
         assertTrue(actual.contains(review3));
+    }
+
+    @AfterAll()
+    public void afterAll(){
+        reviewRepo.deleteAll();
+        productRepo.deleteAll();
+        userRepo.deleteAll();
     }
 }
