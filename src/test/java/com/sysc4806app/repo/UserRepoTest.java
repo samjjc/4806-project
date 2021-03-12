@@ -57,8 +57,8 @@ public class UserRepoTest {
 
     @Test
     public void findByNameTest(){
-        List<User> actual = userRepo.findByName("EIM");
-        assertTrue(actual.contains(user2));
+        User actual = userRepo.findByName("EIM");
+        assertEquals(actual,(user2));
     }
 
 }
