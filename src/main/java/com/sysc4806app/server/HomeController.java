@@ -20,13 +20,13 @@ public class HomeController {
     // Login form
     @RequestMapping("/login")
     public String login(){
-        return "login.html";
+        return "login";
     }
 
     // Login form with error
     @RequestMapping("/login-error")
     public String loginError(Model model) {
         model.addAttribute("loginError", true);
-        return "login.html";
+        return "login";
     }
 }
