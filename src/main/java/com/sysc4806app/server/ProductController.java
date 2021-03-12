@@ -17,7 +17,7 @@ public class ProductController {
     private ProductRepo productRepo;
 
     @GetMapping("/productlist")
-    public String greeting(Model model) {
+    public String productList(Model model) {
 
         model.addAttribute("products", productRepo.findAll());
 
