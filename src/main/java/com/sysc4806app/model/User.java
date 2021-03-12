@@ -1,6 +1,5 @@
 package com.sysc4806app.model;
 
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,7 +16,7 @@ public class User {
     @Column(unique = true)
     private String name;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
     private Collection<Review> reviews;
 
     @OneToMany(cascade = CascadeType.PERSIST)

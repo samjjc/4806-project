@@ -4,6 +4,7 @@ import com.sysc4806app.model.Product;
 import com.sysc4806app.model.ProductChain;
 import com.sysc4806app.model.ProductType;
 import com.sysc4806app.repos.ProductRepo;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -70,5 +71,10 @@ public class ProductRepoTest {
         assertFalse(actual.contains(prod1));
         assertTrue(actual.contains(prod2));
         assertTrue(actual.contains(prod3));
+    }
+
+    @AfterAll()
+    public void afterAll() {
+        productRepo.deleteAll();
     }
 }

@@ -1,5 +1,7 @@
 package com.sysc4806app.model;
+
 import javax.persistence.*;
+import java.util.StringJoiner;
 
 @Entity
 public class Product {
@@ -7,13 +9,18 @@ public class Product {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String link;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ProductType type;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ProductChain chain;
 
@@ -77,5 +84,16 @@ public class Product {
         return this.getDescription().equals(p.getDescription()) && this.getLink().equals(p.getLink())
                 && this.getName().equals(p.getName()) && this.getId().equals(p.getId())
                 && this.getType().equals(p.getType()) && this.getChain().equals(p.getChain());
+    }
+
+    @Override
+    public String toString(){
+        StringJoiner builder = new StringJoiner(", ");
+        builder.add(String.format("Product: %s", id));
+        builder.add(name);
+        builder.add(link);
+        builder.add(String.format("%s", type));
+        builder.add(String.format("%s", chain));
+        return builder.toString();
     }
 }

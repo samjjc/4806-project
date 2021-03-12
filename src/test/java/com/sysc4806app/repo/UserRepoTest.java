@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -21,22 +20,12 @@ public class UserRepoTest {
     private UserRepo userRepo;
 
     private User user1, user2, user3;
-    private Long  id1, id2, id3;
 
     @BeforeAll
     public void beforeAll() {
-        user1 = new User("Joe");
-        user2 = new User("EIM");
-        user3 = new User("Ben");
-
-        userRepo.save(user1);
-        userRepo.save(user2);
-        userRepo.save(user3);
-
-        id1=user1.getId();
-        id2=user2.getId();
-        id3=user3.getId();
-
+        user1 = userRepo.save(new User("Joe"));
+        user2 = userRepo.save(new User("EIM"));
+        user3 = userRepo.save(new User("Ben"));
     }
 
     @Test
@@ -49,14 +38,18 @@ public class UserRepoTest {
 
     @Test
     public void findByIdTest(){
-        Optional<User> actual = userRepo.findById(id1);
-        assertEquals(user1,actual.get());
+        User actual = userRepo.findById(user1.getId().longValue());
+        assertEquals(user1,actual);
     }
 
     @Test
     public void findByNameTest(){
-        User actual = userRepo.findByName("EIM");
-        assertEquals(actual,(user2));
+        List<User> actual = userRepo.findByName("EIM");
+        assertTrue(actual.contains(user2));
     }
 
+    @AfterAll()
+    public void afterAll(){
+        userRepo.deleteAll();
+    }
 }

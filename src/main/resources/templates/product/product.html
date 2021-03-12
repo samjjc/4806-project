@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${product.name}"></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script th:src="@{/js/products/product.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/products/product.css}"/>
+    <link rel="stylesheet" th:href="@{/css/ffr.css}"/>
+</head>
+<body>
+    <a href="/productlist"><button >View all products</button></a><br/>
+    <div class="content">
+        <div>
+            <h1 th:text="${product.name}"></h1>
+            <a th:href="${product.link}">View Product Here!</a>
+            <p id=default-rating th:text="${rating}"></p>
+            <p th:text="${product.description}"></p>
+        </div>
+        <div>
+            <p>Have you tried the <span th:text="${product.name}"></span>?</p>
+            <a th:href="@{/product/__${id}__/review}" class="ffr-button">Write A Review</a>
+        </div>
+        <div>
+            <h2>User Reviews</h2>
+            <table>
+                <thead>
+                <tr>
+                    <td>User</td>
+                    <td>Rating</td>
+                    <td>Comment</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${reviews.empty}">
+                    <td colspan="3"> No reviews. Be the first!</td>
+                </tr>
+                <tr th:each="review, ind : ${reviews}">
+                    <td th:text="${review.user.name}"></td>
+                    <td th:text="${review.rating}"></td>
+                    <td th:text="${review.text}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
