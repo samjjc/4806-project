@@ -37,13 +37,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        User user1 = new User("user1");
-        User user2 = new User("user2");
-        User user3 = new User("user3");
-        userRepo.save(user1);
-        userRepo.save(user2);
-        userRepo.save(user3);
-
         auth.inMemoryAuthentication()
                 .withUser("user1").password(passwordEncoder().encode("pass1")).roles("USER")
                 .and()
