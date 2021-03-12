@@ -5,11 +5,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <tbody>
+
+    <a href="/product"><button >Add new product</button></a><br/>
     <tr th:if="${products.empty}">
         <td colspan="2"> No Products Available </td>
     </tr>
     <tr th:each="product : ${products}">
-        <td><h3 th:text="${product.name}"></h3></td>
+        <td><a th:href="'/product/'+${product.id}"><h3 th:text="${product.name}"></h3></a></td>
         <td>Link: <span th:text="${product.link}"></span></td><br/>
         <td>Description: <span th:text="${product.description}"></span></td><br/>
         <td>Product Type: <span th:text="${product.type.text}"></span></td><br/>
