@@ -24,3 +24,6 @@ Added the new feature
 
 This feature will allow users to add new products to the app.
 
+## Database Schema
+
+![Database schema](databaseSchema.png)
