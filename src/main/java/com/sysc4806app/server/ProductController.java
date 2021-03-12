@@ -3,38 +3,39 @@ package com.sysc4806app.server;
 import com.sysc4806app.model.Product;
 import com.sysc4806app.model.ProductChain;
 import com.sysc4806app.model.ProductType;
-import com.sysc4806app.model.User;
 import com.sysc4806app.repos.ProductRepo;
-import com.sysc4806app.repos.UserRepo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.security.Principal;
-import java.util.List;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class ProductController {
-
-    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-
     @Autowired
     private ProductRepo productRepo;
 
-    @Autowired
-    private UserRepo userRepo;
-
     @GetMapping("/productlist")
-    public String productList(Model model,Principal principal) {
-        logger.info(principal.getName());
-        User signedIn = userRepo.findByName(principal.getName());
-        logger.info(signedIn.getId().toString());
-        logger.info(signedIn.getName());
+    public String productList(Model model) {
+
         model.addAttribute("products", productRepo.findAll());
 
         return "productlist";
+    }
+
+    @PostMapping("/product")
+    public RedirectView submitNewProductForm(@ModelAttribute Product product) {
+        productRepo.save(product);
+        return new RedirectView(String.format("/product/%s", product.getId()));
+    }
+
+    @GetMapping(value="/product")
+    public String getNewProductForm(Model model) {
+        model.addAttribute("product", new Product());
+        model.addAttribute("types", ProductType.values());
+        model.addAttribute("chains", ProductChain.values());
+        return "addNewProductForm";
     }
 }

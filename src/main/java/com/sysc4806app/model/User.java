@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
+@Table(name = User.TABLE_NAME) // "user" is a key word in postgres
 public class User {
+
+    public static final String TABLE_NAME="app_user";
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
