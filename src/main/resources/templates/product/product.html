@@ -32,13 +32,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:if="${reviews.empty}">
+                <tr th:if="${reviews.isEmpty()}">
                     <td colspan="3"> No reviews. Be the first!</td>
                 </tr>
-                <tr th:each="review, ind : ${reviews}">
-                    <td th:text="${review.user.name}"></td>
-                    <td th:text="${review.rating}"></td>
-                    <td th:text="${review.text}"></td>
+                <tr th:unless="${reviews.isEmpty()}" th:each="review : ${reviews}">
+                    <td th:text="${review.getUser() != null} ? ${review.getUser().getName()} : 'Unknown'"></td>
+                    <td th:text="${review.getRating()}"></td>
+                    <td th:text="${review.getText()}"></td>
                 </tr>
                 </tbody>
             </table>

@@ -8,7 +8,7 @@ public class Review {
     public static final int MAX_RATING = 5;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue()
     private Long id;
     private int rating;
     private String text;
