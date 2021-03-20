@@ -38,7 +38,7 @@ public class ReviewController {
     }
 
     @GetMapping(value="/product/{id}/review")
-    public String getNewProductForm(Model model) {
+    public String getNewProductForm(@PathVariable String id, Model model) {
         model.addAttribute("review", new Review());
         return "addNewReviewForm";
     }
