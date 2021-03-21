@@ -29,6 +29,7 @@ public class ReviewController {
     public RedirectView submitNewProductForm(
             @PathVariable("id") long id, @ModelAttribute Review review) {
         review.setProduct(productRepo.findById(id));
+        review.setId(null);
         reviewRepo.save(review);
         // need to add User to the review once login is done
         // or create Anon user that anonymous users can use
