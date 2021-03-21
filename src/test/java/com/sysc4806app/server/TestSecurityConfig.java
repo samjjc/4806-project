@@ -13,6 +13,6 @@ class TestSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity security) throws Exception {
-        security.httpBasic().and().formLogin().disable();
+        security.httpBasic().and().formLogin().disable().csrf().disable();
     }
 }

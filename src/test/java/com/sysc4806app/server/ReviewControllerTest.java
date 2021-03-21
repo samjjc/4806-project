@@ -3,14 +3,19 @@ package com.sysc4806app.server;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.sysc4806app.configuration.WebSecurityConfig;
 import com.sysc4806app.model.*;
 import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.ReviewRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.charset.StandardCharsets;
@@ -23,7 +28,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
-@WebMvcTest(ReviewController.class)
+@ImportAutoConfiguration(TestSecurityConfig.class)
+@WebMvcTest(value = ReviewController.class)
 class ReviewControllerTest {
 
     @Autowired
@@ -37,6 +43,7 @@ class ReviewControllerTest {
             new MediaType(MediaType.APPLICATION_JSON.getType(),
                     MediaType.APPLICATION_JSON.getSubtype(),
                     StandardCharsets.UTF_8);
+
 
     @Test
     public void controllerShouldReturnAddReviewForm() throws Exception {
@@ -59,7 +66,7 @@ class ReviewControllerTest {
         String requestJson=ow.writeValueAsString(review);
 
         // ensuring that post is redirected to correct url without any other errors
-        mockMvc.perform(post(url).contentType(APPLICATION_JSON_UTF8)
+        mockMvc.perform(post(url).contentType(APPLICATION_JSON_UTF8).secure(false)
                 .content(requestJson))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/product/1"));
