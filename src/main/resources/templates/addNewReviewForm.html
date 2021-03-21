@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add a New Review</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>Add a Review</h1>
+<form action="#" th:action="@{/product/__${id}__/review}" th:object="${review}" method="post">
+    <p>Rating: <input type="number" th:field="*{rating}" /></p>
+    <textarea name="Review" th:field="*{text}" cols="50" rows="10"></textarea>
+    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+</form>
+</body>
+</html>

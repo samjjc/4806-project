@@ -3,6 +3,17 @@
 }
 
 .content {
-    max-width: 300px;
-    margin: auto;
+    text-align: center;
+}
+
+h1,h2 {
+    color: #722F37;
+}
+
+p, span, h4 {
+    color: #A83731
+}
+
+.white-background {
+    background-color: #FFFFFF;
 }
