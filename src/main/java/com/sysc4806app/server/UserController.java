@@ -18,7 +18,7 @@ public class UserController {
     private UserRepo userRepo;
 
     @PostMapping("/follow/{follower}/{followee}")
-    public RedirectView submitNewProductForm(@PathVariable("follower") long followerID,
+    public RedirectView followUser(@PathVariable("follower") long followerID,
                                              @PathVariable("followee") long followeeID) {
         User follower = userRepo.findById(followerID);
         follower.followUser(userRepo.findById(followeeID));
