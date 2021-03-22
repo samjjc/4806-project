@@ -15,6 +15,8 @@ public class Product {
     private String name;
     @Column(nullable = false)
     private String description;
+    @Column(nullable = false)
+    private String imageLink;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -26,12 +28,17 @@ public class Product {
 
     public Product() {}
 
-    public Product(String link, String name, String description, ProductType type, ProductChain chain) {
+    public Product(String link, String name, String description, ProductType type, ProductChain chain, String imageLink) {
         this.link = link;
         this.name = name;
         this.description = description;
         this.type = type;
         this.chain = chain;
+        this.imageLink = imageLink;
+    }
+
+    public Product(String link, String name, String description, ProductType type, ProductChain chain) {
+        this(link, name, description, type, chain, "");
     }
 
     public Long getId() { return id; }
@@ -70,6 +77,14 @@ public class Product {
 
     public void setChain(ProductChain chain) { this.chain = chain; }
 
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
+    }
+
     @Override
     public boolean equals(Object o){
         if (o == this) {
@@ -82,7 +97,7 @@ public class Product {
         Product p = (Product) o;
 
         return this.getDescription().equals(p.getDescription()) && this.getLink().equals(p.getLink())
-                && this.getName().equals(p.getName()) && this.getId().equals(p.getId())
+                && this.getName().equals(p.getName()) && this.getId().equals(p.getId()) && this.getImageLink().equals(p.getImageLink())
                 && this.getType().equals(p.getType()) && this.getChain().equals(p.getChain());
     }
 
@@ -92,6 +107,7 @@ public class Product {
         builder.add(String.format("Product: %s", id));
         builder.add(name);
         builder.add(link);
+        builder.add(imageLink);
         builder.add(String.format("%s", type));
         builder.add(String.format("%s", chain));
         return builder.toString();

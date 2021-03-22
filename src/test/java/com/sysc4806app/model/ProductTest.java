@@ -13,13 +13,15 @@ class ProductTest {
     private static ProductType type;
     private static ProductChain chain;
     private static Product product;
+    private static String imageLink;
 
     @BeforeAll
     static void beforeAll() {
         link = "www.link.com";
         name = "Orange";
         description = "It's orange.";
-        product = new Product(link, name, description, type, chain);
+        imageLink = "www.example.com/image.jpg";
+        product = new Product(link, name, description, type, chain, imageLink);
     }
     @Test
     void getSetLink() {
@@ -43,5 +45,13 @@ class ProductTest {
         assertEquals(description, product.getDescription());
         product.setDescription(newDescription);
         assertEquals(newDescription, product.getDescription());
+    }
+
+    @Test
+    void getSetImageLink() {
+        String newLink = "www.example.com/image.jpg";
+        assertEquals(imageLink, product.getImageLink());
+        product.setImageLink(newLink);
+        assertEquals(newLink, product.getImageLink());
     }
 }
