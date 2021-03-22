@@ -16,6 +16,8 @@
         <a href="/productlist" class="ffr-button">View all products</a><br/>
             <div class="content">
                 <h1 th:text="${product.getName()}"></h1>
+                <img th:if="${!product.getImageLink().equals('')}" th:src="${product.getImageLink()}" th:alt="${product.getName()}" width="200" height="200">
+                </br>
                 <a th:href="${product.getLink()}" class="ffr-button">View Product Here!</a>
                 <p id=default-rating th:text="${rating}"></p>
                 <p th:text="${product.getDescription()}"></p>
