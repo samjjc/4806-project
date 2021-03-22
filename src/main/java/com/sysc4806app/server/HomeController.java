@@ -18,7 +18,7 @@ public class HomeController {
     }
 
     // Login form
-    @RequestMapping("/login")
+    @GetMapping("/login")
     public String login(){
         return "login";
     }
