@@ -34,8 +34,7 @@ public class HomeController {
 
     // Login form
     @GetMapping("/login")
-    public String login(Model model){
-        model.addAttribute("user", new User());
+    public String login(){
         return "login";
     }
 
