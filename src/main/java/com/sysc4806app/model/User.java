@@ -37,12 +37,12 @@ public class User {
         following = new ArrayList<>();
     }
 
-    public User(String name) {
-        this.name = name;
-        this.password = "pass1";
-        reviews = new ArrayList<>();
-        following = new ArrayList<>();
-    }
+//    public User(String name) {
+//        this.name = name;
+//        this.password = "pass1";
+//        reviews = new ArrayList<>();
+//        following = new ArrayList<>();
+//    }
 
     public Long getId() { return id; }
 

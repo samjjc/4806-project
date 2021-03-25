@@ -15,7 +15,7 @@ class UserTest {
     @BeforeEach
     public void setUp() {
         name = "Bob";
-        guy = new User(name);
+        guy = new User(name, "pass1");
     }
 
     @Test
@@ -51,7 +51,7 @@ class UserTest {
     @Test
     void addFollowers() {
         assertTrue(guy.getFollowing().isEmpty());
-        User user = new User("Rob");
+        User user = new User("Rob", "pass1");
         guy.followUser(user);
         assertFalse(guy.getFollowing().isEmpty());
         assertTrue(guy.getFollowing().contains(user));
