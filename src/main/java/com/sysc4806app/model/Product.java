@@ -1,6 +1,11 @@
 package com.sysc4806app.model;
 
+import org.hibernate.validator.constraints.URL;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.StringJoiner;
 
 @Entity
@@ -9,21 +14,21 @@ public class Product {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false) @NotBlank @URL
     private String link;
-    @Column(nullable = false)
+    @Column(nullable = false) @Size(min=3, max=20)
     private String name;
-    @Column(nullable = false)
+    @Column(nullable = false) @Size(min=5, max=200)
     private String description;
-    @Column(nullable = false)
+    @Column(nullable = false) @NotNull @URL
     private String imageLink;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) @NotNull
     private ProductType type;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) @NotNull
     private ProductChain chain;
 
     public Product() {}
