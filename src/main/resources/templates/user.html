@@ -5,11 +5,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <tbody>
-    <h1>Link: <span th:text="${user.name}"></span></h1><br/>
-    <h3>Following:</h3><br/>
-    <tr th:each="followee : ${user.following}">
-        <td><a th:href="'/user/'+${followee.id}"><span th:text="${followee.name}"></span></a></td><br/>
+    <h1 th:text="${user.name}"></h1>
+    <h3>Following:</h3>
+    <tr class="row" th:unless="${user.following.isEmpty()}" th:each="followee : ${user.following}">
+        <td class="row-user" ><a th:href="'/user/'+${followee.id}"><span th:text="${followee.name}"></span></a></td><br/>
     </tr>
+    <h3>Reviews:</h3>
     <tr class="row" th:unless="${user.reviews.isEmpty()}" th:each="review : ${user.reviews}">
         <td class="row-user" th:text="${review.getUser() != null} ? ${review.getUser().getName()} : 'Unknown'"></td>
         <td class="row-rating" th:text="${review.getRating()}"></td>

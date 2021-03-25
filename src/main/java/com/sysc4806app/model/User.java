@@ -16,6 +16,9 @@ public class User {
     @Column(unique = true)
     private String name;
 
+    @Column(nullable = false)
+    private String password;
+
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
     private Collection<Review> reviews;
 
@@ -27,8 +30,16 @@ public class User {
         following = new ArrayList<>();
     }
 
+    public User(String name, String password) {
+        this.name = name;
+        this.password = password;
+        reviews = new ArrayList<>();
+        following = new ArrayList<>();
+    }
+
     public User(String name) {
         this.name = name;
+        this.password = "pass1";
         reviews = new ArrayList<>();
         following = new ArrayList<>();
     }
@@ -43,6 +54,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void addReview(Review review) {

@@ -28,12 +28,9 @@ public class UserController {
         return new RedirectView(String.format("/user/%s", followeeID));
     }
 
-    @GetMapping("/user/{id}")
-    public String userView(Model model, @PathVariable("id") long id) {
-        System.out.println("LOGINGGGGGGG");
-        System.out.println(userRepo.findAll());
-        model.addAttribute("user", userRepo.findById(id));
-
+    @GetMapping("/user/{name}")
+    public String userView(Model model, @PathVariable("name") String name) {
+        model.addAttribute("user", userRepo.findByName(name));
         return "user";
     }
 }
