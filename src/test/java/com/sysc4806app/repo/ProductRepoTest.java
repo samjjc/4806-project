@@ -25,9 +25,9 @@ public class ProductRepoTest {
     @BeforeAll
     public void beforeAll() {
         productRepo.deleteAll();
-        prod1 = new Product("www.joeiscool.com", "JOMJOMS","you already know.", ProductType.CFE, ProductChain.TIM);
-        prod2 = new Product("www.eimdem.com", "tacos","what what.", ProductType.BGR, ProductChain.KFC);
-        prod3 = new Product("www.soup.com", "tacos", "yum tum", ProductType.BGR, ProductChain.TIM);
+        prod1 = new Product("http://www.joeiscool.com", "JOMJOMS","you already know.", ProductType.CFE, ProductChain.TIM);
+        prod2 = new Product("http://www.eimdem.com", "tacos","what what.", ProductType.BGR, ProductChain.KFC);
+        prod3 = new Product("http://www.soup.com", "tacos", "yum tum", ProductType.BGR, ProductChain.TIM);
 
         productRepo.save(prod1);
         productRepo.save(prod2);

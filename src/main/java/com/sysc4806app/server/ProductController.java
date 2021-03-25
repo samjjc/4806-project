@@ -1,6 +1,9 @@
 package com.sysc4806app.server;
 
-import com.sysc4806app.model.*;
+import com.sysc4806app.model.Product;
+import com.sysc4806app.model.ProductChain;
+import com.sysc4806app.model.ProductType;
+import com.sysc4806app.model.Review;
 import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.ReviewRepo;
 import com.sysc4806app.services.ProductService;
@@ -8,23 +11,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
 public class ProductController {
-    @Autowired
-    private ProductRepo productRepo;
+
+    private final ProductRepo productRepo;
+    private final ReviewRepo reviewRepo;
+    private final ProductService productService;
 
     @Autowired
-    private ReviewRepo reviewRepo;
-
-    @Autowired
-    private ProductService productService;
+    public ProductController(ProductRepo productRepo, ReviewRepo reviewRepo, ProductService productService) {
+        this.productRepo = productRepo;
+        this.reviewRepo = reviewRepo;
+        this.productService = productService;
+    }
 
     @GetMapping("/productlist")
     public String productList(Model model) {
@@ -58,9 +63,14 @@ public class ProductController {
     }
 
     @PostMapping("/product")
-    public RedirectView submitNewProductForm(@ModelAttribute Product product) {
+    public String submitNewProductForm(@Valid @ModelAttribute Product product, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("types", ProductType.values());
+            model.addAttribute("chains", ProductChain.values());
+            return "addNewProductForm";
+        }
         productRepo.save(product);
-        return new RedirectView(String.format("/product/%s", product.getId()));
+        return String.format("redirect:/product/%s", product.getId());
     }
 
     @GetMapping(value="/product")
