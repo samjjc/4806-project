@@ -80,6 +80,10 @@ public class User {
         following.add(user);
     }
 
+    public void unfollowUser(User user) {
+        following.remove(user);
+    }
+
     public Collection<User> getFollowing() {
         return following;
     }

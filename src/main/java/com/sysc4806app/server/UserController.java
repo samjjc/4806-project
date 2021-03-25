@@ -5,6 +5,7 @@ import com.sysc4806app.model.User;
 import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,18 +20,26 @@ public class UserController {
     @Autowired
     private UserRepo userRepo;
 
-    @PostMapping("/follow/{follower}/{followee}")
-    public RedirectView followUser(@PathVariable("follower") long followerID,
-                                             @PathVariable("followee") long followeeID) {
-        User follower = userRepo.findById(followerID);
-        follower.followUser(userRepo.findById(followeeID));
+    @PostMapping("/follow//{followee}")
+    public RedirectView followUser(@PathVariable("followee") String name) {
+        User follower = userRepo.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
+        follower.followUser(userRepo.findByName(name));
         userRepo.save(follower);
-        return new RedirectView(String.format("/user/%s", followeeID));
+        return new RedirectView(String.format("/user/%s", name));
+    }
+
+    @PostMapping("/unfollow//{followee}")
+    public RedirectView unfollowUser(@PathVariable("followee") String name) {
+        User follower = userRepo.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
+        follower.unfollowUser(userRepo.findByName(name));
+        userRepo.save(follower);
+        return new RedirectView(String.format("/user/%s", name));
     }
 
     @GetMapping("/user/{name}")
     public String userView(Model model, @PathVariable("name") String name) {
         model.addAttribute("user", userRepo.findByName(name));
+        model.addAttribute("viewer", userRepo.findByName(SecurityContextHolder.getContext().getAuthentication().getName()));
         return "user";
     }
 }
