@@ -27,9 +27,9 @@ public class UserControllerTest {
 
     @Test
     public void followingWorksProperly() throws Exception {
-        User sam = new User("sam");
+        User sam = new User("sam", "pass1");
         userRepo.save(sam);
-        User ben = new User("ben");
+        User ben = new User("ben", "pass1");
         userRepo.save(ben);
         this.restTemplate.postForObject(
                 "http://localhost:" + port + "/follow/"+sam.getId()+"/"+ben.getId(),

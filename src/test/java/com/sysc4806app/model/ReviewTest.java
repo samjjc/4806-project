@@ -17,7 +17,7 @@ class ReviewTest {
     static void beforeAll() {
         rating = 5;
         text = "This product is very good";
-        user = new User("tester");
+        user = new User("tester", "pass1");
         product = new Product("www.link.com", "Orange", "It's orange.", ProductType.ICE, ProductChain.DQ);
         review = new Review(rating, text, product, user);
     }

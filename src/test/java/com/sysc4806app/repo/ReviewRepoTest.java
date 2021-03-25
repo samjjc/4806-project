@@ -35,7 +35,7 @@ public class ReviewRepoTest {
     @BeforeAll
     public void beforeAll() {
         productRepo.deleteAll();
-        user = userRepo.save(new User("tester"));
+        user = userRepo.save(new User("tester", "pass1"));
         prod1 = productRepo.save(new Product("www.joeiscool.com", "JOMJOMS","you already know.", ProductType.CFE, ProductChain.TIM));
         prod2 = productRepo.save(new Product("www.soup.com", "tacos", "yum tum", ProductType.BGR, ProductChain.AW));
         review1 = reviewRepo.save(new Review(5,"good",prod1, user));
