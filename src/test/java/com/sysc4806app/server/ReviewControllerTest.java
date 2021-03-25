@@ -7,6 +7,7 @@ import com.sysc4806app.configuration.WebSecurityConfig;
 import com.sysc4806app.model.*;
 import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.ReviewRepo;
+import com.sysc4806app.repos.UserRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -38,6 +39,8 @@ class ReviewControllerTest {
     private ProductRepo productRepo;
     @MockBean
     private ReviewRepo reviewRepo;
+    @MockBean
+    private UserRepo userRepo;
 
     private static final MediaType APPLICATION_JSON_UTF8 =
             new MediaType(MediaType.APPLICATION_JSON.getType(),
