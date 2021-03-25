@@ -6,6 +6,8 @@ import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,5 +26,11 @@ public class UserController {
         follower.followUser(userRepo.findById(followeeID));
         userRepo.save(follower);
         return new RedirectView(String.format("/user/%s", followeeID));
+    }
+
+    @GetMapping("/user/{name}")
+    public String userView(Model model, @PathVariable("name") String name) {
+        model.addAttribute("user", userRepo.findByName(name));
+        return "user";
     }
 }

@@ -20,10 +20,13 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-            .antMatchers("/","/productlist","/product/*").permitAll()
+            .antMatchers("/","/productlist","/product/*","/signup").permitAll()
             .antMatchers("/js/**","/css/**").permitAll()
             .anyRequest().authenticated()
             .and()
@@ -37,16 +40,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
 
-        auth.inMemoryAuthentication()
-                .withUser("user1").password(passwordEncoder().encode("pass1")).roles("USER")
-                .and()
-                .withUser("user2").password(passwordEncoder().encode("pass2")).roles("USER")
-                .and()
-                .withUser("admin").password(passwordEncoder().encode("pass3")).roles("ADMIN");
+        UserDetailsService userDetailsService = jpaUserDetails();
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public UserDetailsService jpaUserDetails() {
+        return new CustomUserDetailsService();
     }
 }

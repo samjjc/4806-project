@@ -23,9 +23,9 @@ public class UserRepoTest {
 
     @BeforeAll
     public void beforeAll() {
-        user1 = userRepo.save(new User("Joe"));
-        user2 = userRepo.save(new User("EIM"));
-        user3 = userRepo.save(new User("Ben"));
+        user1 = userRepo.save(new User("Joe", "pass1"));
+        user2 = userRepo.save(new User("EIM", "pass2"));
+        user3 = userRepo.save(new User("Ben", "pass3"));
     }
 
     @Test
@@ -44,8 +44,8 @@ public class UserRepoTest {
 
     @Test
     public void findByNameTest(){
-        List<User> actual = userRepo.findByName("EIM");
-        assertTrue(actual.contains(user2));
+        User actual = userRepo.findByName("EIM");
+        assertEquals(user2, actual);
     }
 
     @AfterAll()
