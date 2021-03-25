@@ -30,7 +30,7 @@ public class ProductServiceTest {
     @Test
     public void TestCalculateRating() {
         Product product = new Product("https://sysc4806app.herokuapp.com/", "Website", "The website.", ProductType.ICE, ProductChain.DQ);
-        User user = new User("tester");
+        User user = new User("tester", "pass1");
         List<Review> reviews = new ArrayList<>();
         reviews.add(new Review(5, "This is a review.", product, user));
         reviews.add(new Review(3, "This is a review.", product, user));

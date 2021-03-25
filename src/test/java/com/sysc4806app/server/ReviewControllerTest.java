@@ -59,7 +59,7 @@ class ReviewControllerTest {
     public void testAddReview() throws Exception {
         String url = "/product/1/review";
 
-        User user = new User("tester");
+        User user = new User("tester", "pass1");
         Product prod = new Product("www.joeIsCool.com", "POMPOMS","you already know.", ProductType.CFE, ProductChain.TIM);
         Review review = new Review(5,"good", prod, user);
 
