@@ -5,6 +5,7 @@ import com.sysc4806app.model.Product;
 import com.sysc4806app.model.User;
 import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.UserRepo;
+import com.sysc4806app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,9 @@ public class UserController {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/follow/{followee}")
     public RedirectView followUser(@PathVariable("followee") String name) {
@@ -51,5 +55,12 @@ public class UserController {
     @ExceptionHandler(UserNotFoundException.class)
     public String noUserError(){
         return "errors/noUserError";
+    }
+
+    @GetMapping(path="/user/{name}/following")
+    public String requestFollowingPage(@PathVariable("name") String name, Model model) {
+        model.addAttribute("topFollowedUsers", userService.getMostPopularUsers(10));
+        model.addAttribute("following", userService.getFollowing(name));
+        return "following";
     }
 }
