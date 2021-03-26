@@ -43,10 +43,4 @@ public class UserController {
         model.addAttribute("viewer", userRepo.findByName(SecurityContextHolder.getContext().getAuthentication().getName()));
         return "user";
     }
-
-    @GetMapping("/user/{name}")
-    public String userView(Model model, @PathVariable("name") String name) {
-        model.addAttribute("user", userRepo.findByName(name));
-        return "user";
-    }
 }
