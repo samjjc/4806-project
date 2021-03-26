@@ -1,5 +1,6 @@
 package com.sysc4806app.server;
 
+import com.sysc4806app.exceptions.UserNotFoundException;
 import com.sysc4806app.model.Product;
 import com.sysc4806app.model.User;
 import com.sysc4806app.repos.ProductRepo;
@@ -8,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
@@ -38,9 +37,19 @@ public class UserController {
     }
 
     @GetMapping("/user/{name}")
-    public String userView(Model model, @PathVariable("name") String name) {
-        model.addAttribute("user", userRepo.findByName(name));
-        model.addAttribute("viewer", userRepo.findByName(SecurityContextHolder.getContext().getAuthentication().getName()));
+    public String userView(Model model, @PathVariable("name") String name) throws Exception {
+        User user =userRepo.findByName(name);
+        if(user==null){
+            throw new UserNotFoundException();
+        }
+        User viewer = userRepo.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("user",user );
+        model.addAttribute("viewer", viewer);
         return "user";
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public String noUserError(){
+        return "errors/noUserError";
     }
 }
