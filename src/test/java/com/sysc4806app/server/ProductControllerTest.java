@@ -1,9 +1,9 @@
 package com.sysc4806app.server;
 
-import com.sysc4806app.model.Product;
-import com.sysc4806app.model.ProductChain;
-import com.sysc4806app.model.ProductType;
+import com.sysc4806app.model.*;
 import com.sysc4806app.repos.ProductRepo;
+import com.sysc4806app.repos.ReviewRepo;
+import com.sysc4806app.repos.UserRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
+
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,6 +28,12 @@ public class ProductControllerTest {
 
     @Autowired
     private ProductRepo productRepo;
+
+    @Autowired
+    private ReviewRepo reviewRepo;
+
+    @Autowired
+    private UserRepo userRepo;
 
     @Test
     public void productPageShouldProperlyShowEmptyMessage() {
@@ -58,6 +66,44 @@ public class ProductControllerTest {
                 .contains("must not be blank")
                 .contains("you must select a Product Type")
                 .contains("you must select a Product Chain");
+    }
+
+    @Test
+    public void testSorting() {
+        productRepo.save(new Product("http://www.soup.com", "tacos", "yum tum yum tum", ProductType.BGR, ProductChain.TIM));
+        Product product = productRepo.save(new Product("http://www.soup.com", "salsa", "yum tum yum tum", ProductType.BGR, ProductChain.TIM));
+        User user = userRepo.save(new User("name", "pass"));
+        reviewRepo.save(new Review(5, "good", product, user));
+
+        Pattern tacosFirst = Pattern.compile(".*tacos.*salsa.*", Pattern.DOTALL);
+        Pattern salsaFirst = Pattern.compile(".*salsa.*tacos.*", Pattern.DOTALL);
+
+        String response = restTemplate.getForObject("http://localhost:" + port +
+                "/productlist?sort=averageRating,asc", String.class);
+        assertThat(tacosFirst.matcher(response).matches()).isTrue();
+
+        response = restTemplate.getForObject("http://localhost:" + port +
+                "/productlist?sort=averageRating,desc", String.class);
+        assertThat(salsaFirst.matcher(response).matches()).isTrue();
+
+        reviewRepo.deleteAll();
+        productRepo.deleteAll();
+        userRepo.deleteAll();
+    }
+
+    @Test
+    public void testFiltering() {
+        productRepo.save(new Product("http://www.soup.com", "tacos", "yum tum yum tum", ProductType.CFE, ProductChain.TIM));
+        productRepo.save(new Product("http://www.soup.com", "salsa", "yum tum yum tum", ProductType.BGR, ProductChain.AW));
+        assertThat(restTemplate.getForObject("http://localhost:" + port +
+                "/productlist?type=coffee&chain=timmies",String.class))
+                .contains("tacos")
+                .doesNotContain("salsa");
+        assertThat(restTemplate.getForObject("http://localhost:" + port +
+                "/productlist?type=burgers&chain=aw",String.class))
+                .contains("salsa")
+                .doesNotContain("tacos");
+        productRepo.deleteAll();
     }
 
 }

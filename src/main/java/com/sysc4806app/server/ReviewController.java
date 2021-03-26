@@ -4,15 +4,16 @@ import com.sysc4806app.model.Review;
 import com.sysc4806app.model.User;
 import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.ReviewRepo;
-import com.sysc4806app.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.view.RedirectView;
+
+import javax.validation.Valid;
 
 import java.security.Principal;
 import java.util.Collection;
@@ -34,14 +35,17 @@ public class ReviewController {
     }
 
     @PostMapping("/product/{id}/review")
-    public RedirectView submitNewProductForm(Principal principal,
-                                             @PathVariable("id") long id, @ModelAttribute Review review) {
+    public String submitNewProductForm(
+            @PathVariable("id") long id, @Valid @ModelAttribute Review review,Principal principal, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "addNewReviewForm";
+        }
         User loginUser = userRepo.findByName(principal.getName());
         review.setProduct(productRepo.findById(id));
         review.setId(null);
         review.setUser(loginUser);
         reviewRepo.save(review);
-        return new RedirectView(String.format("/product/%s", id));
+        return String.format("redirect:/product/%s", id);
     }
 
     @GetMapping(value="/product/{id}/review")

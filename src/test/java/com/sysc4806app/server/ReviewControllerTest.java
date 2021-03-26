@@ -1,12 +1,10 @@
 package com.sysc4806app.server;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.sysc4806app.model.*;
+import com.sysc4806app.model.Review;
 import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.ReviewRepo;
 import com.sysc4806app.repos.UserRepo;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -14,8 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.nio.charset.StandardCharsets;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -36,11 +32,12 @@ class ReviewControllerTest {
     @MockBean
     private UserRepo userRepo;
 
-    private static final MediaType APPLICATION_JSON_UTF8 =
-            new MediaType(MediaType.APPLICATION_JSON.getType(),
-                    MediaType.APPLICATION_JSON.getSubtype(),
-                    StandardCharsets.UTF_8);
+    private static String url;
 
+    @BeforeAll
+    static void beforeAll() {
+        url = "/product/1/review";
+    }
 
     @Test
     public void controllerShouldReturnAddReviewForm() throws Exception {
@@ -51,22 +48,27 @@ class ReviewControllerTest {
 
     @Test
     public void testAddReview() throws Exception {
-        String url = "/product/1/review";
-
-        User user = new User("tester", "pass1");
-        Product prod = new Product("www.joeIsCool.com", "POMPOMS","you already know.", ProductType.CFE, ProductChain.TIM);
-        Review review = new Review(5,"good", prod, user);
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson=ow.writeValueAsString(review);
-
         // ensuring that post is redirected to correct url without any other errors
-        mockMvc.perform(post(url).contentType(APPLICATION_JSON_UTF8).secure(false)
-                .content(requestJson))
+        mockMvc.perform(post(url).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .secure(false)
+                .param("rating", "5")
+                .param("text", "very good")
+                .sessionAttr("review", new Review()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/product/1"));
+    }
+
+    @Test
+    public void testFailAddReview() throws Exception {
+        // ensuring that post fails because of form validation
+        mockMvc.perform(post(url).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .secure(false)
+                .param("rating", "42")
+                .param("text", "")
+                .sessionAttr("review", new Review()))
+                .andExpect(status().isOk()) // field errors are considered ok
+                .andExpect(model().attributeHasFieldErrors("review", "rating", "text"))
+                .andExpect(view().name("addNewReviewForm"));
     }
 
 
