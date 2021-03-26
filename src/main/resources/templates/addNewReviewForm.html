@@ -8,7 +8,9 @@
 <h1>Add a Review</h1>
 <form action="#" th:action="@{/product/__${id}__/review}" th:object="${review}" method="post">
     <p>Rating: <input type="number" th:field="*{rating}" /></p>
+    <p th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}">Rating Error</p>
     <textarea name="Review" th:field="*{text}" cols="50" rows="10"></textarea>
+    <p th:if="${#fields.hasErrors('text')}" th:errors="*{text}">Text Error</p>
     <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
 </form>
 </body>
