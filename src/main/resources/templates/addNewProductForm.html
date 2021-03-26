@@ -8,22 +8,28 @@
 <h1>Form</h1>
 <form action="#" th:action="@{/product}" th:object="${product}" method="post">
     <p>Link: <input type="text" th:field="*{link}" /></p>
+    <p th:if="${#fields.hasErrors('link')}" th:errors="*{link}">Link Error</p>
     <p>Name: <input type="text" th:field="*{name}" /></p>
+    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Link Error</p>
     <p>Description: <input type="text" th:field="*{description}" /></p>
+    <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Link Error</p>
     <p>Product Type: <select name="Product Type" th:field="*{type}">
         <option value="NONE" label="--- Select ---"></option>
         <option th:each="type : ${types}"
-                th:value="${type}" th:text="${type.getText()}"></option>
+                th:value="${type.getUrlSegment()}" th:text="${type.getText()}"></option>
         </select>
     </p>
+    <p th:if="${#fields.hasErrors('type')}">you must select a Product Type</p>
 
     <p>Product Chain: <select name="Product Chain" th:field="*{chain}">
         <option value="NONE" label="--- Select ---"></option>
         <option th:each="chain : ${chains}"
-                th:value="${chain}" th:text="${chain.getText()}"></option>
+                th:value="${chain.getUrlSegment()}" th:text="${chain.getText()}"></option>
         </select>
     </p>
+    <p th:if="${#fields.hasErrors('chain')}">you must select a Product Chain</p>
     <p>Image Link: <input type="text" th:field="*{imageLink}" /></p>
+    <p th:if="${#fields.hasErrors('imageLink')}" th:errors="*{imageLink}">Link Error</p>
     <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
 </form>
 </body>
