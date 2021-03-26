@@ -1,0 +1,33 @@
+div.scrollableChainCategory {
+  overflow: auto;
+  white-space: nowrap;
+}
+
+div.scrollableChainCategory a:hover {
+  color: #A83731;
+  background-color: #FFF;
+}
+
+div.scrollableChainCategory img {
+  display: block;
+  overflow: hidden;
+}
+
+div.scrollableChainCategory div {
+  display: inline-block;
+  background-color: #722F37;
+  color: white;
+  padding: 14px;
+  text-decoration: none;
+}
+
+h2 {
+    color: #722F37;
+}
+
+div.scrollableChainCategory a {
+  display: block;
+  color: white;
+  padding: 14px;
+  text-decoration: none;
+}
