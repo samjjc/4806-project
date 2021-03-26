@@ -18,8 +18,8 @@
         </button>
     </form>
 
-    <h3>Following:</h3>
-    <tr class="row" th:unless="${user.following.isEmpty()}" th:each="followee : ${user.following}">
+    <h3>Followers:</h3>
+    <tr class="row" th:unless="${user.getFollowers().isEmpty()}" th:each="followee : ${user.getFollowers()}">
         <td class="row-user" ><a th:href="'/user/'+${followee.name}"><span th:text="${followee.name}"></span></a></td><br/>
     </tr>
     <h3>Reviews:</h3>
