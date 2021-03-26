@@ -37,7 +37,7 @@ public class ReviewController {
 
     @PostMapping("/product/{id}/review")
     public String submitNewReviewForm(
-            @PathVariable("id") long id, @Valid @ModelAttribute Review review,Principal principal, BindingResult bindingResult) {
+            @PathVariable("id") long id, @Valid @ModelAttribute Review review, BindingResult bindingResult,Principal principal) {
         if (bindingResult.hasErrors()) {
             return "addNewReviewForm";
         }
