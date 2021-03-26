@@ -4,6 +4,7 @@ import com.sysc4806app.model.Review;
 import com.sysc4806app.model.User;
 import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.ReviewRepo;
+import com.sysc4806app.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,21 +36,23 @@ public class ReviewController {
     }
 
     @PostMapping("/product/{id}/review")
-    public String submitNewProductForm(
+    public String submitNewReviewForm(
             @PathVariable("id") long id, @Valid @ModelAttribute Review review,Principal principal, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "addNewReviewForm";
         }
-        User loginUser = userRepo.findByName(principal.getName());
+        if(principal!=null) {
+            User loginUser = userRepo.findByName(principal.getName());
+            review.setUser(loginUser);
+        }
         review.setProduct(productRepo.findById(id));
         review.setId(null);
-        review.setUser(loginUser);
         reviewRepo.save(review);
         return String.format("redirect:/product/%s", id);
     }
 
     @GetMapping(value="/product/{id}/review")
-    public String getNewProductForm(@PathVariable String id, Model model) {
+    public String getNewReviewForm(@PathVariable String id, Model model) {
         model.addAttribute("review", new Review());
         return "addNewReviewForm";
     }
