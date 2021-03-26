@@ -1,6 +1,10 @@
 package com.sysc4806app.model;
 
+import org.hibernate.validator.constraints.Range;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Review {
@@ -10,7 +14,9 @@ public class Review {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
+    @Range(min=0, max=5)
     private int rating;
+    @NotBlank @Size(max=100)
     private String text;
     @ManyToOne(cascade = CascadeType.MERGE)
     private User user;
@@ -36,9 +42,6 @@ public class Review {
     }
 
     public void setRating(int rating) {
-        if (rating < 0 || rating > MAX_RATING) {
-            throw new IllegalArgumentException("Rating must be between 0 and " + Review.MAX_RATING + ", inclusive.");
-        }
         this.rating = rating;
     }
 
