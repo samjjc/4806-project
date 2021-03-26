@@ -41,10 +41,11 @@ public class ReviewController {
         if (bindingResult.hasErrors()) {
             return "addNewReviewForm";
         }
-        if(principal!=null) {
-            User loginUser = userRepo.findByName(principal.getName());
-            review.setUser(loginUser);
+        if(principal==null) {
+            return String.format("redirect:/product/%s/review?nologin", id);
         }
+        User loginUser = userRepo.findByName(principal.getName());
+        review.setUser(loginUser);
         review.setProduct(productRepo.findById(id));
         review.setId(null);
         reviewRepo.save(review);

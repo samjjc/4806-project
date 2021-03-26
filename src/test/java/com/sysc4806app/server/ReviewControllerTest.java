@@ -46,7 +46,7 @@ class ReviewControllerTest {
         mockMvc.perform(get("/product/1/review")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("Add a Review")));
     }
-
+    @WithMockUser(username = "joe")
     @Test
     public void testAddReview() throws Exception {
         // ensuring that post is redirected to correct url without any other errors
@@ -57,6 +57,18 @@ class ReviewControllerTest {
                 .sessionAttr("review", new Review()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/product/1"));
+    }
+
+    @Test
+    public void testAddReviewNoUser() throws Exception {
+        // ensuring that post is redirected to correct url without any other errors
+        mockMvc.perform(post(url).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .secure(false)
+                .param("rating", "5")
+                .param("text", "very good")
+                .sessionAttr("review", new Review()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/product/1/review?nologin"));
     }
 
     @Test
