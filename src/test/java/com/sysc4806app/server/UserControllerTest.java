@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @ImportAutoConfiguration(TestSecurityConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -47,6 +48,13 @@ public class UserControllerTest {
                 null,
                 String.class);
         assertThat(userRepo.findById(sam.getId()).get().getFollowing()).containsOnly(ben);
+    }
+
+    @Test
+    public void accessUserNotFound() throws Exception {
+        userRepo.deleteAll();
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/user/123",
+                String.class)).contains("Error 404: The user you seek does not exist.");
     }
 
 }
