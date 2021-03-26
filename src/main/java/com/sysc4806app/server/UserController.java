@@ -20,15 +20,16 @@ public class UserController {
     @Autowired
     private UserRepo userRepo;
 
-    @PostMapping("/follow//{followee}")
+    @PostMapping("/follow/{followee}")
     public RedirectView followUser(@PathVariable("followee") String name) {
         User follower = userRepo.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
         follower.followUser(userRepo.findByName(name));
         userRepo.save(follower);
+
         return new RedirectView(String.format("/user/%s", name));
     }
 
-    @PostMapping("/unfollow//{followee}")
+    @PostMapping("/unfollow/{followee}")
     public RedirectView unfollowUser(@PathVariable("followee") String name) {
         User follower = userRepo.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
         follower.unfollowUser(userRepo.findByName(name));
