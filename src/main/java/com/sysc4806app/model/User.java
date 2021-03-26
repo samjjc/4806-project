@@ -22,19 +22,22 @@ public class User {
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
     private Collection<Review> reviews;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Collection<User> following;
+
+    @ManyToMany(mappedBy = "following")
+    private Collection<User> followers;
 
     public User(){
         reviews = new ArrayList<>();
         following = new ArrayList<>();
+        followers = new ArrayList<>();
     }
 
     public User(String name, String password) {
+        this();
         this.name = name;
         this.password = password;
-        reviews = new ArrayList<>();
-        following = new ArrayList<>();
     }
 
     public Long getId() { return id; }
@@ -84,6 +87,10 @@ public class User {
     public void setFollowing(Collection<User> following) {
         this.following = following;
     }
+
+    public Collection<User> getFollowers() { return followers; }
+
+    public void setFollowers(Collection<User> followers) { this.followers = followers; }
 
     @Override
     public boolean equals(Object o){

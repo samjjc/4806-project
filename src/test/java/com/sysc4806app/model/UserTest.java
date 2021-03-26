@@ -64,4 +64,12 @@ class UserTest {
         guy.setFollowing(newFollowing);
         assertSame(newFollowing, guy.getFollowing());
     }
+
+    @Test
+    void getSetFollowers() {
+        ArrayList<User> newFollowers = new ArrayList<>();
+        assertNotSame(newFollowers, guy.getFollowing());
+        guy.setFollowing(newFollowers);
+        assertSame(newFollowers, guy.getFollowing());
+    }
 }

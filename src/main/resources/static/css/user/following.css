@@ -1,0 +1,59 @@
+.topFollowed {
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 20px;
+    left: 10px;
+    background: #FFF;
+    overflow-x: hidden;
+    padding: 8px 0;
+}
+
+.topFollowed a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    color: #A83731;
+    display: block;
+}
+
+.topFollowed a:hover {
+    color: #FFF;
+    background-color: #722F37;
+}
+
+h3,h2 {
+    color: #722F37;
+}
+
+p {
+    color: #A83731;
+}
+
+.following {
+    margin-left: 200px;
+    padding: 0px 10px;
+}
+
+.followingUserBox a {
+    background-color: #722F37;
+    color: #FFF;
+    text-decoration: none;
+}
+
+.followingUserBox {
+    padding: 5px;
+}
+
+.followingUserBox a:hover {
+    color: #722F37;
+    background-color: #FFF;
+}
+
+.followingUserBox form {
+    display: inline-block;
+}
+
+@media screen and (max-height: 450px) {
+    .topFollowed {padding-top: 15px;}
+    .topFollowed a {font-size: 18px;}
+}
