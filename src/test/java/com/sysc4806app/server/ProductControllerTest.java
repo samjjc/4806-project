@@ -4,6 +4,7 @@ import com.sysc4806app.model.*;
 import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.ReviewRepo;
 import com.sysc4806app.repos.UserRepo;
+import org.apache.tomcat.jni.Proc;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -56,6 +57,23 @@ public class ProductControllerTest {
                 .contains("Tim Horton")
                 .contains("salsa");
         productRepo.deleteAll();
+    }
+
+    @Test
+    public void productPageShouldShowReviewByUser() {
+        Product product = productRepo.save(new Product("http://www.soup.com", "tacos", "yum tum yum tum", ProductType.BGR, ProductChain.TIM));
+        User user=userRepo.save(new User("joe","123"));
+        reviewRepo.save(new Review(5,"sucked",product,user));
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/product/"+product.getId(),
+                String.class))
+                .doesNotContain("Have you tried the tacos?")
+                .contains("http://www.soup.com")
+                .contains("yum tum yum tum")
+                .contains("joe")
+                .contains("sucked");
+        reviewRepo.deleteAll();
+        productRepo.deleteAll();
+        userRepo.deleteAll();
     }
 
     @Test

@@ -1,8 +1,10 @@
 package com.sysc4806app.server;
 
 import com.sysc4806app.model.Review;
+import com.sysc4806app.model.User;
 import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.ReviewRepo;
+import com.sysc4806app.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 
+import java.security.Principal;
+import java.util.Collection;
+
 @Controller
 public class ReviewController {
 
@@ -21,30 +26,34 @@ public class ReviewController {
 
     private final ReviewRepo reviewRepo;
 
+    private final UserRepo userRepo;
+
     @Autowired
-    public ReviewController(ProductRepo productRepo, ReviewRepo reviewRepo) {
+    public ReviewController(ProductRepo productRepo, ReviewRepo reviewRepo, UserRepo userRepo) {
         this.productRepo = productRepo;
         this.reviewRepo = reviewRepo;
+        this.userRepo=userRepo;
     }
 
     @PostMapping("/product/{id}/review")
-    public String submitNewProductForm(
-            @PathVariable("id") long id, @Valid @ModelAttribute Review review, BindingResult bindingResult) {
+    public String submitNewReviewForm(
+            @PathVariable("id") long id, @Valid @ModelAttribute Review review, BindingResult bindingResult,Principal principal) {
         if (bindingResult.hasErrors()) {
             return "addNewReviewForm";
         }
+        if(principal==null) {
+            return String.format("redirect:/product/%s/review?nologin", id);
+        }
+        User loginUser = userRepo.findByName(principal.getName());
+        review.setUser(loginUser);
         review.setProduct(productRepo.findById(id));
         review.setId(null);
         reviewRepo.save(review);
-        // need to add User to the review once login is done
-        // or create Anon user that anonymous users can use
-        // currently lack of a User is handled in the html
-
         return String.format("redirect:/product/%s", id);
     }
 
     @GetMapping(value="/product/{id}/review")
-    public String getNewProductForm(@PathVariable String id, Model model) {
+    public String getNewReviewForm(@PathVariable String id, Model model) {
         model.addAttribute("review", new Review());
         return "addNewReviewForm";
     }
