@@ -8,6 +8,7 @@ import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.ReviewRepo;
 import com.sysc4806app.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,10 +33,22 @@ public class ProductController {
     }
 
     @GetMapping("/productlist")
-    public String productList(Model model) {
-
-        model.addAttribute("products", productRepo.findAll());
-
+    public String productListTest(@RequestParam(name="type", required=false) ProductType type,
+                                  @RequestParam(name="chain", required=false) ProductChain chain,
+                                  Pageable pageable, Model model) {
+        List<Product> productList;
+        // sadly findByTypeAndChain does not handle null values
+        // we could switch these to different endpoints if needed
+        if (type != null && chain != null) {
+            productList = productRepo.findByTypeAndChain(type, chain, pageable);
+        } else if (type != null) {
+            productList = productRepo.findByType(type, pageable);
+        } else if (chain != null) {
+            productList = productRepo.findByChain(chain, pageable);
+        } else {
+            productList = productRepo.findAll(pageable).getContent();
+        }
+        model.addAttribute("products", productList);
         return "productlist";
     }
 
