@@ -93,4 +93,10 @@ public class ProductController {
         model.addAttribute("chains", ProductChain.values());
         return "addNewProductForm";
     }
+
+    @GetMapping(path="/chains")
+    public String requestChains(Model model) {
+        model.addAttribute("categories", productService.getChainImageByCategory());
+        return "product/chains";
+    }
 }
