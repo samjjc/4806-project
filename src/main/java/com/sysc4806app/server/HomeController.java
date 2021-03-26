@@ -46,11 +46,18 @@ public class HomeController {
 
     @PostMapping(value = "/signup")
     public RedirectView signup(@ModelAttribute User user) {
+        if(user.getName()==null || user.getName().isEmpty() || user.getPassword()==null||user.getPassword().isEmpty()){
+            return new RedirectView("/signup?error");
+        }
         User userExists = userRepo.findByName(user.getName());
         if (userExists == null) {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             userRepo.save(user);
+            return new RedirectView("/login");
+
+        }else{
+            return new RedirectView("/signup?userexists");
         }
-        return new RedirectView("/login");
+
     }
 }
