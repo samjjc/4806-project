@@ -1,17 +1,15 @@
 package com.sysc4806app.services;
 
-import com.sysc4806app.model.Product;
-import com.sysc4806app.model.Review;
+import com.sysc4806app.model.*;
 import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.ReviewRepo;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 
 /**
@@ -55,5 +53,26 @@ public class ProductService {
     public List<Review> getProductReviews(long productID, String sortField, Sort.Direction direction) {
         Product product = productRepository.findById(productID);
         return reviewRepository.findByProduct(product, Sort.by(direction, sortField));
+    }
+
+    public String getRandomImageForChain(ProductChain chain) {
+        List<Product> products = productRepository.findByChain(chain);
+        Product[] productsWithImage = products.stream().filter(x -> !x.getImageLink().equals("")).toArray(Product[]::new);
+        if (productsWithImage.length < 1) return "";
+        return productsWithImage[new Random().nextInt(productsWithImage.length)].getImageLink();
+    }
+
+    public List<ChainCategoryResponse> getChainImageByCategory() {
+        List<ChainCategoryResponse> results = new ArrayList<ChainCategoryResponse>();
+        for (ProductChainTag category : ProductChainTag.values()) {
+            ChainCategoryResponse categoryResponse = new ChainCategoryResponse(category);
+            for (ProductChain chain : ProductChain.values()) {
+                if (Arrays.asList(chain.getCategoryTags()).contains(category)) {
+                    categoryResponse.addChainAndImage(chain, getRandomImageForChain(chain));
+                }
+            }
+            results.add(categoryResponse);
+        }
+        return results;
     }
 }
