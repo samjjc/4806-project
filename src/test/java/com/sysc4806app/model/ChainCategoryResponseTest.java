@@ -9,13 +9,6 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ChainCategoryResponseTest {
-    private static String link;
-    private static String name;
-    private static String description;
-    private static ProductType type;
-    private static ProductChain chain;
-    private static Product product;
-    private static String imageLink;
     private static ProductChainTag tag;
     private static ChainCategoryResponse ccresponse;
     private static List<Pair<ProductChain, String>> chainAndImages;
