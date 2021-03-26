@@ -6,17 +6,22 @@
 </head>
 <tbody>
     <h1 th:text="${user.name}"></h1>
-    <form th:action="'/follow/'+${user.name}" method="post" th:unless="${viewer.getFollowing().contains(user)}">
+    <form th:action="'/follow/'+${user.name}" method="post" th:unless="${viewer ==null ||viewer.getFollowing().contains(user) || user.name==viewer.name}">
         <button type="submit">
             Follow
         </button>
     </form>
 
-    <form th:action="'/unfollow/'+${user.name}" method="post" th:if="${viewer.getFollowing().contains(user)}">
+    <form th:action="'/unfollow/'+${user.name}" method="post" th:if="${viewer !=null && viewer.getFollowing().contains(user) && user.name!=viewer.name}">
         <button type="submit">
             Unfollow
         </button>
     </form>
+
+    <h3 th:if="${viewer != null && user.name==viewer.name}">Following:</h3>
+    <tr class="row" th:unless="${viewer==null || user.name!=viewer.name ||user.getFollowing().isEmpty()}" th:each="following : ${user.getFollowing()}">
+        <td class="row-user" ><a th:href="'/user/'+${following.name}"><span th:text="${following.name}"></span></a></td><br/>
+    </tr>
 
     <h3>Followers:</h3>
     <tr class="row" th:unless="${user.getFollowers().isEmpty()}" th:each="followee : ${user.getFollowers()}">
@@ -24,8 +29,8 @@
     </tr>
     <h3>Reviews:</h3>
     <tr class="row" th:unless="${user.reviews.isEmpty()}" th:each="review : ${user.reviews}">
-        <td class="row-user" th:text="${review.getUser() != null} ? ${review.getUser().getName()} : 'Unknown'"></td>
+        <td class="row-product"><a th:href="'/product/'+${review.getProduct().getId()}"><span th:text="${review.getProduct() != null} ? ${review.getProduct().getName()} : 'Unknown'"></span></a></td>
         <td class="row-rating" th:text="${review.getRating()}"></td>
-        <td class="row-text" th:text="${review.getText()}"></td>
+        <td class="row-text" th:text="${review.getText()}"></td><br/>
     </tr>
 </html>

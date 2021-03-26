@@ -27,17 +27,21 @@ This feature will allow users to add new products to the app.
 ## Current State of Project
 
 With respect to the kanban, all milestone one and two issues have been completed:
-###Milestone 1:
+
+### Milestone 1:
+
 - app is configured to use travis CI, heroku, postgres
 - model objects are completed and stored in database
 - functionality for products is complete
 
-###Milestone 2:
+### Milestone 2:
+
 - added user page, following, followers, user linked to review
 - improved login, added sign up
 - added chain page, filtering, product images
 
 ## Plan for Next Milestone
+
 Important features for the third milestone:
 - Jaccard distance
 - degress of separation
@@ -48,5 +52,6 @@ Important features for the third milestone:
 
 ![Database schema](databaseSchema.png)
 
-##UML Class Diagram
+## UML Class Diagram
+
 ![UML Class Diagram](sysc4806app_ClassUML.png)

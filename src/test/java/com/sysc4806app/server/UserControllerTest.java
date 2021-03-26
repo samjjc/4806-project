@@ -13,6 +13,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -48,6 +49,7 @@ public class UserControllerTest {
                 null,
                 String.class);
         assertThat(userRepo.findById(sam.getId()).get().getFollowing()).containsOnly(ben);
+        userRepo.deleteAll();
     }
 
     @Test
@@ -55,6 +57,24 @@ public class UserControllerTest {
         userRepo.deleteAll();
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/user/123",
                 String.class)).contains("Error 404: The user you seek does not exist.");
+    }
+
+    @Test
+    @WithMockUser("joe")
+    public void accessUserLoggedIn() throws Exception {
+        User joe = new User("joe", "123");
+        userRepo.save(joe);
+        User eim = new User("eimhin", "pass1");
+        userRepo.save(eim);
+
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/user/"+joe.getName(),
+                String.class))
+                .doesNotContain("follow")
+                .doesNotContain("unfollow")
+                .contains(joe.getName())
+                .contains("Followers:")
+                .contains("Reviews:");
+
     }
 
 }
