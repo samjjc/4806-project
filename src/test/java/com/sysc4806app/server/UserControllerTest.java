@@ -58,39 +58,22 @@ public class UserControllerTest {
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/user/123",
                 String.class)).contains("Error 404: The user you seek does not exist.");
     }
-    @WithMockUser("joe")
+
     @Test
+    @WithMockUser("joe")
     public void accessUserLoggedIn() throws Exception {
         User joe = new User("joe", "123");
         userRepo.save(joe);
-        User ben = new User("ben", "pass1");
-        userRepo.save(ben);
-
-        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_GLOBAL);
-        Authentication authentication = Mockito.mock(Authentication.class);
-        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
-        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
-        Mockito.when(authentication.getName()).thenReturn(joe.getName());
-        SecurityContextHolder.setContext(securityContext);
+        User eim = new User("eimhin", "pass1");
+        userRepo.save(eim);
 
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/user/"+joe.getName(),
                 String.class))
                 .doesNotContain("follow")
                 .doesNotContain("unfollow")
                 .contains(joe.getName())
-                .contains("Following:")
+                .contains("Followers:")
                 .contains("Reviews:");
-
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/user/"+ben.getName(),
-                String.class))
-                .contains("Follow");
-        joe.followUser(ben);
-        userRepo.save(joe);
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/user/"+ben.getName(),
-                String.class))
-                .contains("Unfollow");
-
-        userRepo.deleteAll();
 
     }
 
