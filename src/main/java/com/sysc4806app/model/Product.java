@@ -2,6 +2,8 @@ package com.sysc4806app.model;
 
 import org.hibernate.validator.constraints.URL;
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -30,6 +32,10 @@ public class Product {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING) @NotNull
     private ProductChain chain;
+
+    // take average rating if it exists, or 0
+    @Formula(value="(SELECT coalesce(AVG(rev.rating), 0) FROM review rev WHERE rev.product_id = id)")
+    private Float averageRating;
 
     public Product() {}
 
