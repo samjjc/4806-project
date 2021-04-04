@@ -3,6 +3,7 @@ package com.sysc4806app.server;
 import com.sysc4806app.model.Review;
 import com.sysc4806app.model.User;
 import com.sysc4806app.repos.UserRepo;
+import com.sysc4806app.services.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,14 @@ public class HomeController {
     private UserRepo userRepo;
 
     @Autowired
+    private ProductService productService;
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/")
     public String greeting(Model model) {
+        model.addAttribute("products", productService.getNewestProducts(20));
         return "index";
     }
 

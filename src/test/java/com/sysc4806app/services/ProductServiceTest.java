@@ -8,8 +8,14 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,5 +50,20 @@ public class ProductServiceTest {
         assertTrue(result >= 0);
         assertTrue(result <= Review.MAX_RATING);
         assertEquals(result, 16d/6d);
+    }
+
+    @Test
+    public void TestGetNewestProducts() {
+        Product product = new Product("https://sysc4806app.herokuapp.com/", "Website", "The website.", ProductType.ICE, ProductChain.DQ);
+        Product product2 = new Product("https://sysc4806app.herokuapp.com/", "Website1", "The website.", ProductType.ICE, ProductChain.DQ);
+        Product product3 = new Product("https://sysc4806app.herokuapp.com/", "Website3", "The website.", ProductType.ICE, ProductChain.DQ);
+        List<Product> products = new ArrayList<>();
+        products.add(product);
+        products.add(product2);
+        products.add(product3);
+        Pageable pageable = PageRequest.of(0, 3, Sort.by("id").descending());
+        Mockito.when(productRepository.findAll(pageable)).thenReturn(new PageImpl<>(products));
+        Collection<Product> result = service.getNewestProducts(3);
+        assertEquals(result, products);
     }
 }

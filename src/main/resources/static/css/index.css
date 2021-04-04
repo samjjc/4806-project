@@ -1,0 +1,74 @@
+#fast {
+    position: relative;
+    top: 25px;
+    left: 80px;
+    height: 300px;
+    font-size: 250px;
+    font-family: 'Faster One', cursive;
+}
+#food {
+    position: relative;
+    top: -50px;
+    left: 100px;
+    font-size: 90px;
+    font-family: 'Racing Sans One', cursive;
+}
+#review {
+    position: relative;
+    top: 20px;
+    left: -115px;
+    font-size: 90px;
+    font-family: 'Racing Sans One', cursive;
+}
+#copyright {
+    position: relative;
+    top: -60px;
+    left: -160px;
+    font-size: 60px;
+    font-family: 'Faster One', cursive;
+}
+
+h1 {
+    color: #722F37;
+}
+
+.content {
+    margin: 25px;
+}
+
+.newProducts {
+  max-width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.newProduct {
+  color: white;
+  padding: 5px;
+  height: 400px;
+}
+
+.newProduct img {
+  display: block;
+  overflow: hidden;
+  min-height: 80%;
+  max-height: 80%;
+  max-width: 100%;
+}
+
+.newProduct a {
+  display: block;
+  background-color: #A83731;
+  color: white;
+  padding: 14px;
+  max-width: 399px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.newProduct a:hover {
+  color: #A83731;
+  background-color: #FFF;
+}
