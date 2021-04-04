@@ -5,8 +5,10 @@
     <title>Following</title>
     <link rel="stylesheet" th:href="@{/css/user/following.css}"/>
     <link rel="stylesheet" th:href="@{/css/ffr.css}"/>
+    <script th:src="@{/js/navigation-bar.js}"></script>
 </head>
 <body style="background-color:#f7f3f3;">
+<nav-bar th:attr="user=${navUser}"></nav-bar>
 <div class="topFollowed">
     <h3>Top Followed Users:</h3>
     <a th:href="@{/user/__${user.getName()}__}"  th:text="${user.getName()}" th:each="user : ${topFollowedUsers}"></a>

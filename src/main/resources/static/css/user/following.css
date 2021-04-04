@@ -1,6 +1,5 @@
 .topFollowed {
     width: 200px;
-    position: fixed;
     z-index: 1;
     top: 20px;
     left: 10px;

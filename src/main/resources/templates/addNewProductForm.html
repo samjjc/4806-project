@@ -3,8 +3,11 @@
 <head>
     <title>Add a New Product</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script th:src="@{/js/navigation-bar.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/ffr.css}"/>
 </head>
 <body>
+<nav-bar th:attr="user=${navUser}"></nav-bar>
 <h1>Form</h1>
 <form action="#" th:action="@{/product}" th:object="${product}" method="post">
     <p>Link: <input type="text" th:field="*{link}" /></p>

@@ -3,8 +3,11 @@
 <head>
     <title>Test Page</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script th:src="@{/js/navigation-bar.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/ffr.css}"/>
 </head>
 <body>
+<nav-bar th:attr="user=${navUser}"></nav-bar>
 <p th:text="'Hello, !'" />
 </body>
 </html>
