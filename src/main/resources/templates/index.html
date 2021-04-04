@@ -5,9 +5,37 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script th:src="@{/js/navigation-bar.js}"></script>
     <link rel="stylesheet" th:href="@{/css/ffr.css}"/>
+    <link rel="stylesheet" th:href="@{/css/index.css}"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Faster+One&family=Racing+Sans+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Faster+One&display=swap" rel="stylesheet">
 </head>
 <body>
+<div>
+<span id="fast">Fast</span>
+<span id="food">Food</span>
+<span id="review">Review</span>
+<span id="copyright">©</span>
+</div>
 <nav-bar th:attr="user=${navUser}"></nav-bar>
-<p th:text="'Hello, !'" />
+<div class="content">
+    <h1>Welcome to Fast Food Fast Review - your #1 fast food review site!</h1>
+    <p>We thank you all for your continued support, and we would like to thank our sponsors:</p>
+    <ul>
+        <li>S.Y.S.C Inc.</li>
+        <li>Kabab Industries</li>
+        <li>Crooley Empire Inc.</li>
+        <li>Thrice Removed Food Paste Emporium</li>
+        <li>Software Lab LLC</li>
+    </ul>
+    <p>So once again, to all of our users, thank you - and go get reviewing!</p>
+    <h1>Newest Products</h1>
+<div class="newProducts">
+    <div th:each="product : ${products}" class="newProduct">
+        <img th:src="${product.getImageLink()}" th:alt="${product.getName()}">
+        <a th:href="@{/product/__${product.getId()}__}" th:text="${product.getName()}"></a>
+    </div>
+</div>
+</div>
 </body>
 </html>
