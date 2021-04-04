@@ -3,8 +3,11 @@
 <head>
     <title>Add a New Review</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script th:src="@{/js/navigation-bar.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/ffr.css}"/>
 </head>
 <body>
+<nav-bar th:attr="user=${navUser}"></nav-bar>
 <h1>Add a Review</h1>
 <div th:if="${param.nologin}">
     Cannot post review if not logged in.

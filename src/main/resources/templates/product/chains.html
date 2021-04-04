@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <title>Chains</title>
     <link rel="stylesheet" th:href="@{/css/products/chains.css}"/>
+    <script th:src="@{/js/navigation-bar.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/ffr.css}"/>
 </head>
 <body style="text-align: center;background-color:#f7f3f3;">
+<nav-bar th:attr="user=${navUser}"></nav-bar>
 <div th:each="category : ${categories}">
     <h2 th:text="${category.getTag().getText()}"></h2>
     <div class="scrollableChainCategory">

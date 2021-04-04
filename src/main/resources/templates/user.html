@@ -3,8 +3,11 @@
 <head>
     <title>User</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script th:src="@{/js/navigation-bar.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/ffr.css}"/>
 </head>
 <tbody>
+    <nav-bar th:attr="user=${navUser}"></nav-bar>
     <h1 th:text="${user.name}"></h1>
     <form th:action="'/follow/'+${user.name}" method="post" th:unless="${viewer ==null ||viewer.getFollowing().contains(user) || user.name==viewer.name}">
         <button type="submit">

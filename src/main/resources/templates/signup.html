@@ -3,8 +3,11 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <title>Spring Security Example </title>
+    <script th:src="@{/js/navigation-bar.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/ffr.css}"/>
 </head>
 <body>
+<nav-bar th:attr="user=${navUser}"></nav-bar>
 <div th:if="${param.error}">
     Invalid username and password.
 </div>
