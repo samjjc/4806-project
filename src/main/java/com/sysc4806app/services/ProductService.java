@@ -3,6 +3,8 @@ package com.sysc4806app.services;
 import com.sysc4806app.model.*;
 import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.ReviewRepo;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -74,5 +76,9 @@ public class ProductService {
             results.add(categoryResponse);
         }
         return results;
+    }
+
+    public Collection<Product> getNewestProducts(int numProducts) {
+        return productRepository.findAll(PageRequest.of(0, numProducts, Sort.by("id").descending())).getContent();
     }
 }
