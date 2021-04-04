@@ -33,7 +33,7 @@ class NavBar extends HTMLElement {
                 '<li class="ffr-nav-bar-right"><a class="ffr-nav-bar-text" href="/login">Login</a></li>';
         } else {
             html += '<li><a class="ffr-nav-bar-text" href="/user/' + this.user + '/following">My Follows</a></li>' +
-                '<li class="ffr-nav-bar-right"><a class="ffr-nav-bar-text" href="/signout">Sign Out</a></li>' +
+                '<li class="ffr-nav-bar-right"><a class="ffr-nav-bar-text" href="/logout">Sign Out</a></li>' +
                 '<li class="ffr-nav-bar-right"><a class="ffr-nav-bar-text" href="/user/' + this.user + '">' + this.user + '</a></li>';
         }
         this.innerHTML = html + '</ul>';
