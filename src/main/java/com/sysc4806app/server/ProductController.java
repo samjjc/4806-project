@@ -35,18 +35,20 @@ public class ProductController {
     @GetMapping("/productlist")
     public String productListTest(@RequestParam(name="type", required=false) ProductType type,
                                   @RequestParam(name="chain", required=false) ProductChain chain,
+                                  @RequestParam(name="name", required=false) String name,
                                   Pageable pageable, Model model) {
         List<Product> productList;
         // sadly findByTypeAndChain does not handle null values
         // we could switch these to different endpoints if needed
+        if (name == null) { name = ""; }
         if (type != null && chain != null) {
-            productList = productRepo.findByTypeAndChain(type, chain, pageable);
+            productList = productRepo.findByTypeAndChainAndNameContainsIgnoreCase(type, chain, name, pageable);
         } else if (type != null) {
-            productList = productRepo.findByType(type, pageable);
+            productList = productRepo.findByTypeAndNameContainsIgnoreCase(type, name, pageable);
         } else if (chain != null) {
-            productList = productRepo.findByChain(chain, pageable);
+            productList = productRepo.findByChainAndNameContainsIgnoreCase(chain, name, pageable);
         } else {
-            productList = productRepo.findAll(pageable).getContent();
+            productList = productRepo.findByNameContainsIgnoreCase(name, pageable);
         }
         model.addAttribute("products", productList);
         return "productlist";

@@ -113,14 +113,32 @@ public class ProductControllerTest {
     public void testFiltering() {
         productRepo.save(new Product("http://www.soup.com", "tacos", "yum tum yum tum", ProductType.CFE, ProductChain.TIM));
         productRepo.save(new Product("http://www.soup.com", "salsa", "yum tum yum tum", ProductType.BGR, ProductChain.AW));
+        productRepo.save(new Product("http://www.soup.com", "goodfood", "yum tum yum tum", ProductType.BGR, ProductChain.AW));
         assertThat(restTemplate.getForObject("http://localhost:" + port +
                 "/productlist?type=coffee&chain=timmies",String.class))
                 .contains("tacos")
+                .doesNotContain("goodfood")
                 .doesNotContain("salsa");
         assertThat(restTemplate.getForObject("http://localhost:" + port +
                 "/productlist?type=burgers&chain=aw",String.class))
                 .contains("salsa")
+                .contains("goodfood")
                 .doesNotContain("tacos");
+        assertThat(restTemplate.getForObject("http://localhost:" + port +
+                "/productlist?name=a",String.class))
+                .contains("salsa")
+                .contains("tacos")
+                .doesNotContain("goodfood");
+        assertThat(restTemplate.getForObject("http://localhost:" + port +
+                "/productlist?name=SALSA",String.class))
+                .contains("salsa")
+                .doesNotContain("tacos")
+                .doesNotContain("goodfood");
+        assertThat(restTemplate.getForObject("http://localhost:" + port +
+                "/productlist?name=o&type=burgers&chain=aw",String.class))
+                .contains("goodfood")
+                .doesNotContain("tacos")
+                .doesNotContain("salsa");
         productRepo.deleteAll();
     }
 

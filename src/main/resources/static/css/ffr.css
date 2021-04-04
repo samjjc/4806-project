@@ -1,3 +1,4 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
 .ffr-button {
 	-webkit-appearance: none;
 	-moz-appearance: none;
@@ -7,7 +8,7 @@
 	transition: background-color .25s ease;
 	cursor: pointer;
 	display: inline-block;
-	padding: 0 32px;
+	padding: 0 16px;
 	line-height: 16px;
 	display: -webkit-inline-box;
 	display: -ms-inline-flexbox;
@@ -131,4 +132,11 @@ nav-bar li a:hover, nav-bar li a img:hover{
 body {
     padding: 0;
     margin: 0;
+}
+
+.ffr-input {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 16px;
+  border: none;
 }
