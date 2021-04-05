@@ -10,6 +10,39 @@
     <nav-bar th:attr="user=${navUser}"></nav-bar>
     <a href="/product" class="ffr-button">Add new product</a><br><br/>
     <a href="/chains" class="ffr-button">Browse by Chain</a><br><br/>
+
+    <div class="dropdown">
+        <button class="ffr-button">Filter Product Type
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a th:href="@{/productlist(name=${name},chain=${chain}, sort=${sort})}" th:text="None"></a>
+            <a th:each="type : ${types}"
+               th:href="@{/productlist(name=${name},type=${type.getUrlSegment()},chain=${chain}, sort=${sort})}" th:text="${type.getText()}"></a>
+        </div>
+    </div>
+
+    <div class="dropdown">
+        <button class="ffr-button">Filter Chain
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a th:href="@{/productlist(name=${name},type=${type}, sort=${sort})}" th:text="None"></a>
+            <a th:each="chain : ${chains}"
+               th:href="@{/productlist(name=${name},type=${type},chain=${chain.getUrlSegment()}, sort=${sort})}" th:text="${chain.getText()}"></a>
+        </div>
+    </div>
+
+    <div class="dropdown">
+        <button class="ffr-button">Sort Method
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a th:href="@{/productlist(name=${name}, type=${type}, chain=${chain})}" th:text="None"></a>
+            <a th:href="@{/productlist(name=${name}, type=${type}, chain=${chain}, sort='averageRating,desc')}">Average Rating</a>
+        </div>
+    </div><br><br><br>
+
     <tr th:if="${products.empty}">
         <td colspan="2"> No Products Available </td>
     </tr>

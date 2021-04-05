@@ -51,6 +51,18 @@ public class ProductController {
             productList = productRepo.findByNameContainsIgnoreCase(name, pageable);
         }
         model.addAttribute("products", productList);
+        model.addAttribute("types", ProductType.values());
+        model.addAttribute("chains", ProductChain.values());
+        model.addAttribute("type", type);
+        model.addAttribute("chain", chain);
+        model.addAttribute("name", name);
+        Sort.Order order = pageable.getSort().getOrderFor("averageRating");
+        if (order == null) {
+            model.addAttribute("sort", null);
+        } else {
+            model.addAttribute("sort", order.getProperty() + "," + order.getDirection());
+        }
+
         return "productlist";
     }
 
