@@ -53,6 +53,29 @@ public class ProductServiceTest {
     }
 
     @Test
+    public void TestCalculateFollowRating() {
+        Product product = new Product("https://sysc4806app.herokuapp.com/", "Website", "The website.", ProductType.ICE, ProductChain.DQ);
+        User user1 = new User("tester", "pass1");
+        User user2 = new User("tester2", "pass2");
+        User user3 = new User("tester3", "pass3");
+        user1.followUser(user2);
+        user1.followUser(user3);
+        Collection<User> following = user1.getFollowing();
+
+        List<Review> reviews = new ArrayList<>();
+        reviews.add(new Review(3, "This is a review.", product, user2));
+        reviews.add(new Review(2, "This is a review.", product, user3));
+        reviews.add(new Review(5, "This is a review.", product, user2));
+        reviews.add(new Review(0, "This is a review.", product, user3));
+        Mockito.when(reviewRepository.findByProductAndUserIn(product,following)).thenReturn(reviews);
+        Mockito.when(productRepository.findById(1)).thenReturn(product);
+        double result = service.calculateFollowingRating(1,following);
+        assertTrue(result >= 0);
+        assertTrue(result <= Review.MAX_RATING);
+        assertEquals(result, 10d/4d);
+    }
+
+    @Test
     public void TestGetNewestProducts() {
         Product product = new Product("https://sysc4806app.herokuapp.com/", "Website", "The website.", ProductType.ICE, ProductChain.DQ);
         Product product2 = new Product("https://sysc4806app.herokuapp.com/", "Website1", "The website.", ProductType.ICE, ProductChain.DQ);

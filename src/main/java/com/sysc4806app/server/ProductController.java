@@ -1,13 +1,12 @@
 package com.sysc4806app.server;
 
-import com.sysc4806app.model.Product;
-import com.sysc4806app.model.ProductChain;
-import com.sysc4806app.model.ProductType;
-import com.sysc4806app.model.Review;
+import com.sysc4806app.model.*;
 import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.ReviewRepo;
+import com.sysc4806app.repos.UserRepo;
 import com.sysc4806app.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -16,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -23,12 +23,14 @@ public class ProductController {
 
     private final ProductRepo productRepo;
     private final ReviewRepo reviewRepo;
+    private final UserRepo userRepo;
     private final ProductService productService;
 
     @Autowired
-    public ProductController(ProductRepo productRepo, ReviewRepo reviewRepo, ProductService productService) {
+    public ProductController(ProductRepo productRepo, ReviewRepo reviewRepo, UserRepo userRepo,ProductService productService) {
         this.productRepo = productRepo;
         this.reviewRepo = reviewRepo;
+        this.userRepo =userRepo;
         this.productService = productService;
     }
 
@@ -36,10 +38,16 @@ public class ProductController {
     public String productListTest(@RequestParam(name="type", required=false) ProductType type,
                                   @RequestParam(name="chain", required=false) ProductChain chain,
                                   @RequestParam(name="name", required=false) String name,
-                                  Pageable pageable, Model model) {
+                                  Pageable pageable, Model model, Principal principal) {
         List<Product> productList;
         // sadly findByTypeAndChain does not handle null values
         // we could switch these to different endpoints if needed
+        Sort.Order followOrder = pageable.getSort().getOrderFor("averageFollowRating");
+        Sort.Order order = pageable.getSort().getOrderFor("averageRating");
+
+        //if averageFollowRating sort then just do unsorted and sort after
+        if(followOrder!=null){ pageable = PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(),Sort.unsorted()); }
+
         if (name == null) { name = ""; }
         if (type != null && chain != null) {
             productList = productRepo.findByTypeAndChainAndNameContainsIgnoreCase(type, chain, name, pageable);
@@ -50,17 +58,31 @@ public class ProductController {
         } else {
             productList = productRepo.findByNameContainsIgnoreCase(name, pageable);
         }
+
+        //sort follow order
+        if(followOrder!=null && principal!=null){
+            User loggedIn = userRepo.findByName(principal.getName());
+            productList.sort( (p1 , p2) -> {
+                Double avg1=productService.calculateFollowingRating(p1.getId(),loggedIn.getFollowing());
+                Double avg2=productService.calculateFollowingRating(p2.getId(),loggedIn.getFollowing());
+                //descending order
+                return avg2.compareTo(avg1);
+            });
+        }
+
         model.addAttribute("products", productList);
         model.addAttribute("types", ProductType.values());
         model.addAttribute("chains", ProductChain.values());
         model.addAttribute("type", type);
         model.addAttribute("chain", chain);
         model.addAttribute("name", name);
-        Sort.Order order = pageable.getSort().getOrderFor("averageRating");
-        if (order == null) {
-            model.addAttribute("sort", null);
-        } else {
+
+        if(followOrder !=null){
+            model.addAttribute("sort", followOrder.getProperty() + "," + followOrder.getDirection());
+        }else if (order != null) {
             model.addAttribute("sort", order.getProperty() + "," + order.getDirection());
+        } else {
+            model.addAttribute("sort", null);
         }
 
         return "productlist";

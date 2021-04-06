@@ -46,6 +46,18 @@ public class ProductService {
     }
 
     /**
+     * Returns the average following rating of the reviews by collection of users for a given product.
+     * @param productID The id of the product, which is an existing and stored product.
+     * @param following The list of users the reviews are created by.
+     * @return The average following rating of the product reviews.
+     */
+    public double calculateFollowingRating(long productID, Collection<User> following) {
+        Product product = productRepository.findById(productID);
+        List<Review> productReviews = reviewRepository.findByProductAndUserIn(product,following);
+        return Math.min(Math.max(productReviews.stream().mapToInt(Review::getRating).average().orElse(0), 0d), Review.MAX_RATING);
+    }
+
+    /**
      * Returns the list of reviews for a given product.
      * @param productID The id of the product, which is an existing and stored product.
      * @param sortField The field of the review to sort on.

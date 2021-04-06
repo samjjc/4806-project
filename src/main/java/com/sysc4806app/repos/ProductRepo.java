@@ -18,8 +18,15 @@ public interface ProductRepo extends PagingAndSortingRepository<Product, Long> {
     List<Product> findByType(ProductType type);
     List<Product> findByType(ProductType type, Pageable sort);
     List<Product> findByTypeAndChain(ProductType type, ProductChain chain, Pageable sort);
+
+    //for average rating sorted
     List<Product> findByNameContainsIgnoreCase(String name, Pageable sort);
     List<Product> findByChainAndNameContainsIgnoreCase(ProductChain chain, String name, Pageable sort);
     List<Product> findByTypeAndNameContainsIgnoreCase(ProductType type, String name, Pageable sort);
     List<Product> findByTypeAndChainAndNameContainsIgnoreCase(ProductType type, ProductChain chain, String name, Pageable sort);
+
+    //for average following sorted
+    List<Product> findByTypeAndChainAndName(ProductType type, ProductChain chain, String name);
+    List<Product> findByTypeAndName(ProductType type, String name);
+    List<Product> findByChainAndName(ProductChain chain, String name);
 }

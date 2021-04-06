@@ -40,6 +40,7 @@
         <div class="dropdown-content">
             <a th:href="@{/productlist(name=${name}, type=${type}, chain=${chain})}" th:text="None"></a>
             <a th:href="@{/productlist(name=${name}, type=${type}, chain=${chain}, sort='averageRating,desc')}">Average Rating</a>
+            <a th:href="@{/productlist(name=${name}, type=${type}, chain=${chain}, sort='averageFollowRating,desc')}">Average Following Rating</a>
         </div>
     </div><br><br><br>
 
