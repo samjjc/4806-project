@@ -19,6 +19,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @ManyToMany
+    private Collection<Role> roles;
+
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "user")
     private Collection<Review> reviews;
 
@@ -32,6 +35,7 @@ public class User {
         reviews = new ArrayList<>();
         following = new ArrayList<>();
         followers = new ArrayList<>();
+        roles = new ArrayList<>();
     }
 
     public User(String name, String password) {
@@ -58,6 +62,18 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        roles.add(role);
     }
 
     public void addReview(Review review) {
