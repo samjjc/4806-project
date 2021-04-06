@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -111,6 +112,7 @@ public class ProductController {
         return "product/product";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/product")
     public String submitNewProductForm(@Valid @ModelAttribute Product product, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -122,6 +124,7 @@ public class ProductController {
         return String.format("redirect:/product/%s", product.getId());
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(value="/product")
     public String getNewProductForm(Model model) {
         model.addAttribute("product", new Product());

@@ -1,35 +1,34 @@
 package com.sysc4806app.server;
 
-import com.sysc4806app.model.Review;
 import com.sysc4806app.model.User;
+import com.sysc4806app.repos.RoleRepo;
 import com.sysc4806app.repos.UserRepo;
 import com.sysc4806app.services.ProductService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.view.RedirectView;
-
-import java.security.Principal;
 
 @Controller
 public class HomeController {
 
-    @Autowired
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
+    private final RoleRepo roleRepo;
+    private final ProductService productService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private ProductService productService;
-
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    public HomeController(UserRepo userRepo, RoleRepo roleRepo,
+                          ProductService productService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userRepo = userRepo;
+        this.roleRepo = roleRepo;
+        this.productService = productService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @GetMapping("/")
     public String greeting(Model model) {
@@ -57,6 +56,7 @@ public class HomeController {
         User userExists = userRepo.findByName(user.getName());
         if (userExists == null) {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            user.addRole(roleRepo.findByName("ROLE_USER"));
             userRepo.save(user);
             return new RedirectView("/login");
 
@@ -64,5 +64,10 @@ public class HomeController {
             return new RedirectView("/signup?userexists");
         }
 
+    }
+
+    @GetMapping("/403")
+    public String accessDenied() {
+        return "errors/accessDenied";
     }
 }
