@@ -4,7 +4,6 @@ import com.sysc4806app.model.*;
 import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.ReviewRepo;
 import com.sysc4806app.repos.UserRepo;
-import org.apache.tomcat.jni.Proc;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -12,10 +11,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
+import org.springframework.web.client.ResourceAccessException;
 
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ImportAutoConfiguration(TestSecurityConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -80,7 +82,8 @@ public class ProductControllerTest {
     public void testEmptyFormValidation() {
         Product emptyProduct = new Product();
         HttpEntity<String> request = new HttpEntity<>(emptyProduct.toString());
-        assertThat(restTemplate.postForObject("http://localhost:" + port + "/product", request, String.class))
+        assertThat(restTemplate.withBasicAuth("testAdmin", "testPass")
+                .postForObject("http://localhost:" + port + "/product", request, String.class))
                 .contains("must not be blank")
                 .contains("you must select a Product Type")
                 .contains("you must select a Product Chain");
@@ -140,6 +143,19 @@ public class ProductControllerTest {
                 .doesNotContain("tacos")
                 .doesNotContain("salsa");
         productRepo.deleteAll();
+    }
+
+    @Test
+    public void testFailRoleBasedAuthorization() {
+        Product emptyProduct = new Product();
+        HttpEntity<String> request = new HttpEntity<>(emptyProduct.toString());
+
+        Exception exception = assertThrows(ResourceAccessException.class, () ->
+                restTemplate.postForObject("http://localhost:" + port + "/product", request, String.class));
+
+        String expectedMessage = "I/O error on POST request";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
 }
