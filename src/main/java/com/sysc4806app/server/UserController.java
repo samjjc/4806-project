@@ -1,17 +1,15 @@
 package com.sysc4806app.server;
 
 import com.sysc4806app.exceptions.UserNotFoundException;
-import com.sysc4806app.model.Product;
 import com.sysc4806app.model.User;
-import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.UserRepo;
 import com.sysc4806app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
@@ -57,6 +55,7 @@ public class UserController {
         return "errors/noUserError";
     }
 
+    @PreAuthorize("#name == authentication.name")
     @GetMapping(path="/user/{name}/following")
     public String requestFollowingPage(@PathVariable("name") String name, Model model) {
         model.addAttribute("topFollowedUsers", userService.getMostPopularUsers(10));
