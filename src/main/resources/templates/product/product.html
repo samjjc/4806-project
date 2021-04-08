@@ -27,7 +27,22 @@
                 <a th:href="@{/product/__${id}__/review}" class="ffr-button">Write A Review</a>
             </div>
         </div>
-        <h2 class="content">User Reviews</h2>
+        <div class="content">
+            <h2>User Reviews</h2>
+            <div class="dropdown-sort">
+                <button class="ffr-button">Sort
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="?">Sequential</a>
+                    <a href="?sort=rating">Highest Rating</a>
+                    <a href="?sort=-rating">Lowest Rating</a>
+                    <a href="?sort=-user.name">Alphabetical Users</a>
+                    <a th:if="${navUser!=null}" href="?sort=jaccard">User Similarity</a>
+                    <a th:if="${navUser!=null}" href="?sort=euclidean">Rating Similarity</a>
+                </div>
+            </div>
+        </div>
         <div class="content white-background" id="default-reviews">
             <table>
                 <thead>

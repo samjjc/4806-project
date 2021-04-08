@@ -17,3 +17,10 @@ p, span, h4 {
 .white-background {
     background-color: #FFFFFF;
 }
+
+.dropdown-sort:hover .dropdown-content{
+	display: block;
+	margin: auto;
+	max-width: 160px;
+	position: relative;
+}

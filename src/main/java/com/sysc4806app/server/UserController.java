@@ -59,6 +59,7 @@ public class UserController {
     @GetMapping(path="/user/{name}/following")
     public String requestFollowingPage(@PathVariable("name") String name, Model model) {
         model.addAttribute("topFollowedUsers", userService.getMostPopularUsers(10));
+        model.addAttribute("topSimilarUsers", userService.getMostSimilarUsers(SecurityContextHolder.getContext().getAuthentication().getName(), 10));
         model.addAttribute("following", userService.getFollowing(name));
         return "following";
     }

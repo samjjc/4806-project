@@ -5,11 +5,13 @@ import com.sysc4806app.repos.ProductRepo;
 import com.sysc4806app.repos.ReviewRepo;
 import com.sysc4806app.repos.UserRepo;
 import com.sysc4806app.services.ProductService;
+import com.sysc4806app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,13 +28,15 @@ public class ProductController {
     private final ReviewRepo reviewRepo;
     private final UserRepo userRepo;
     private final ProductService productService;
+    private final UserService userService;
 
     @Autowired
-    public ProductController(ProductRepo productRepo, ReviewRepo reviewRepo, UserRepo userRepo,ProductService productService) {
+    public ProductController(ProductRepo productRepo, ReviewRepo reviewRepo, UserRepo userRepo,ProductService productService, UserService userService) {
         this.productRepo = productRepo;
         this.reviewRepo = reviewRepo;
         this.userRepo =userRepo;
         this.productService = productService;
+        this.userService = userService;
     }
 
     @GetMapping("/productlist")
@@ -90,13 +94,21 @@ public class ProductController {
     }
 
     @GetMapping(path="/product/{id}")
-    public String requestProduct(@PathVariable("id") long id, @RequestParam(value = "sort", required = false) String sort, Model model) {
+    public String requestProduct(@PathVariable("id") long id, @RequestParam(value = "sort", required = false) String sort, Model model, Principal principal) {
         Product product = productRepo.findById(id);
         double rating = productService.calculateRating(id);
         List<Review> reviews;
 
         if (sort == null) {
             reviews = reviewRepo.findByProduct(product);
+        } else if (sort.equals("jaccard") && principal != null) {
+            reviews = reviewRepo.findByProduct(product);
+            User current = userRepo.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
+            reviews.sort((a, b) -> Float.compare(userService.getJaccardDistance(current, a.getUser()),userService.getJaccardDistance(current, b.getUser())));
+        } else if (sort.equals("euclidean") && principal != null) {
+            reviews = reviewRepo.findByProduct(product);
+            User current = userRepo.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
+            reviews.sort((a, b) -> Float.compare(userService.getEuclideanDistance(current, a.getUser()),userService.getEuclideanDistance(current, b.getUser())));
         } else {
             Sort.Direction dir = Sort.Direction.DESC;
             if (sort.startsWith("-")) {
