@@ -28,4 +28,23 @@ public class UserService {
     public Collection<User> getMostPopularUsers(long numUsers) {
         return userRepository.findAll().stream().sorted(Comparator.comparingInt((User x) -> x.getFollowers().size()).reversed()).limit(numUsers).collect(Collectors.toList());
     }
+
+    public int getDegreeOfSeparationNumber(User root, User target,Collection<User> visited){
+        if (root.equals(target)){
+            return 0;
+        }
+        int DOS = 1;
+        Collection<User> following = root.getFollowing();
+        for( User user : following){
+            visited.add(user);
+            if (user.equals(target)){
+                return DOS;
+            }else if (!visited.contains(user)){
+                getDegreeOfSeparationNumber( root, target, visited);
+            }
+        }
+
+
+        return -1;
+    }
 }
