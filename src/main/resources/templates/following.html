@@ -15,6 +15,10 @@
             <h3>Top Followed Users:</h3>
             <a th:href="@{/user/__${user.getName()}__}"  th:text="${user.getName()}" th:each="user : ${topFollowedUsers}"></a>
         </div>
+        <div class="topFollowed">
+            <h3>Most Similar Users:</h3>
+            <a th:href="@{/user/__${user.getName()}__}"  th:text="${user.getName()}" th:each="user : ${topSimilarUsers}"></a>
+        </div>
     </div>
     <div class="following">
         <h2>Your Follows:</h2>
