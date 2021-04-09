@@ -52,7 +52,7 @@ public class UserController {
 
     @ExceptionHandler(UserNotFoundException.class)
     public String noUserError(){
-        return "errors/noUserError";
+        return "error/noUserError";
     }
 
     @PreAuthorize("#name == authentication.name")
