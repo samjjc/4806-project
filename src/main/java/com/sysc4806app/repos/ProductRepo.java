@@ -3,6 +3,7 @@ package com.sysc4806app.repos;
 import com.sysc4806app.model.Product;
 import com.sysc4806app.model.ProductChain;
 import com.sysc4806app.model.ProductType;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -20,10 +21,10 @@ public interface ProductRepo extends PagingAndSortingRepository<Product, Long> {
     List<Product> findByTypeAndChain(ProductType type, ProductChain chain, Pageable sort);
 
     //for average rating sorted
-    List<Product> findByNameContainsIgnoreCase(String name, Pageable sort);
-    List<Product> findByChainAndNameContainsIgnoreCase(ProductChain chain, String name, Pageable sort);
-    List<Product> findByTypeAndNameContainsIgnoreCase(ProductType type, String name, Pageable sort);
-    List<Product> findByTypeAndChainAndNameContainsIgnoreCase(ProductType type, ProductChain chain, String name, Pageable sort);
+    Page<Product> findByNameContainsIgnoreCase(String name, Pageable sort);
+    Page<Product> findByChainAndNameContainsIgnoreCase(ProductChain chain, String name, Pageable sort);
+    Page<Product> findByTypeAndNameContainsIgnoreCase(ProductType type, String name, Pageable sort);
+    Page<Product> findByTypeAndChainAndNameContainsIgnoreCase(ProductType type, ProductChain chain, String name, Pageable sort);
 
     //for average following sorted
     List<Product> findByTypeAndChainAndName(ProductType type, ProductChain chain, String name);
