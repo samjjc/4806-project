@@ -78,18 +78,30 @@ public class UserService {
         if (root.equals(target)){
             return 0;
         }
+
         int DOS = 1;
+        visited.add(root);
         Collection<User> following = root.getFollowing();
+
+        if (following.isEmpty()){
+            return -1;
+        }
+
+        Collection<Integer> lengths = new ArrayList<>();
         for( User user : following){
-            visited.add(user);
-            if (user.equals(target)){
-                return DOS;
-            }else if (!visited.contains(user)){
-                getDegreeOfSeparationNumber( root, target, visited);
+            if (!visited.contains(user)){
+                int length = getDegreeOfSeparationNumber( user, target, visited);
+                if (length!=-1){
+                    lengths.add(DOS + length);
+                }
             }
         }
 
+        if( lengths.isEmpty()){
+            return -1;
+        }else{
+            return Collections.min(lengths);
+        }
 
-        return -1;
     }
 }

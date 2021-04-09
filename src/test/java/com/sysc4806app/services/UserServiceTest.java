@@ -87,4 +87,36 @@ public class UserServiceTest {
         assertEquals(itr.next(), user4);
         assertFalse(itr.hasNext());
     }
+
+    @Test
+    public void TestGetDegreeOfSeparationNumber() {
+        List<User> users = new ArrayList<>();
+        users.add(user1);
+        users.add(user3);
+        users.add(user4);
+        users.add(user2);
+        User user5 =new User("user5","123");
+
+        user1.followUser(user2);
+        user1.followUser(user4);
+        user2.followUser(user1); //test loops
+        user2.followUser(user3);
+        user2.followUser(user4);
+        user3.followUser(user2);
+        //self dos
+        int result = service.getDegreeOfSeparationNumber(user1, user1, new ArrayList<>());
+        assertEquals(0,result);
+        //normal dos
+        result = service.getDegreeOfSeparationNumber(user1, user2, new ArrayList<>());
+        assertEquals(1,result);
+        result = service.getDegreeOfSeparationNumber(user1, user3, new ArrayList<>());
+        assertEquals(2,result);
+        //unlinked user
+        result = service.getDegreeOfSeparationNumber(user1, user5, new ArrayList<>());
+        assertEquals(-1,result);
+        //user with no following
+        result = service.getDegreeOfSeparationNumber(user4, user2, new ArrayList<>());
+        assertEquals(-1,result);
+
+    }
 }

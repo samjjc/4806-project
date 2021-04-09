@@ -8,7 +8,7 @@
 </head>
 <tbody>
     <nav-bar th:attr="user=${navUser}"></nav-bar>
-    <h1 th:text="${user.name}"></h1>
+    <h1 th:text="${dos!=null} ? ${user.name + '  --  separation: '+dos} : ${user.name}"></h1>
     <form th:action="'/follow/'+${user.name}" method="post" th:unless="${viewer ==null ||viewer.getFollowing().contains(user) || user.name==viewer.name}">
         <button type="submit">
             Follow
