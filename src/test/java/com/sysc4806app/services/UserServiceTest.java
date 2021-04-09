@@ -104,18 +104,18 @@ public class UserServiceTest {
         user2.followUser(user4);
         user3.followUser(user2);
         //self dos
-        int result = service.getDegreeOfSeparationNumber(user1, user1, new ArrayList<>());
+        int result = service.getDegreeOfSeparationNumber(user1, user1);
         assertEquals(0,result);
         //normal dos
-        result = service.getDegreeOfSeparationNumber(user1, user2, new ArrayList<>());
+        result = service.getDegreeOfSeparationNumber(user1, user2);
         assertEquals(1,result);
-        result = service.getDegreeOfSeparationNumber(user1, user3, new ArrayList<>());
+        result = service.getDegreeOfSeparationNumber(user1, user3);
         assertEquals(2,result);
         //unlinked user
-        result = service.getDegreeOfSeparationNumber(user1, user5, new ArrayList<>());
+        result = service.getDegreeOfSeparationNumber(user1, user5);
         assertEquals(-1,result);
         //user with no following
-        result = service.getDegreeOfSeparationNumber(user4, user2, new ArrayList<>());
+        result = service.getDegreeOfSeparationNumber(user4, user2);
         assertEquals(-1,result);
 
     }

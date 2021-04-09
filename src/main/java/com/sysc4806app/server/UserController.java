@@ -50,7 +50,7 @@ public class UserController {
         User viewer = userRepo.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
         String dos = null;
         if(viewer!=null){
-            dos = Integer.toString(userService.getDegreeOfSeparationNumber(viewer,user,new ArrayList()));
+            dos = Integer.toString(userService.getDegreeOfSeparationNumber(viewer,user));
         }
         model.addAttribute("dos",dos);
         model.addAttribute("user",user );

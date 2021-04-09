@@ -128,7 +128,7 @@ public class ProductController {
             User current = userRepo.findByName(principal.getName());
             for (Review review : reviews){
                 if (review.getUser()!=null){
-                    degreesOfSeparation.add(Integer.toString(userService.getDegreeOfSeparationNumber(current,review.getUser(),new ArrayList<>())));
+                    degreesOfSeparation.add(Integer.toString(userService.getDegreeOfSeparationNumber(current,review.getUser())));
                 }else{
                     degreesOfSeparation.add("");
                 }

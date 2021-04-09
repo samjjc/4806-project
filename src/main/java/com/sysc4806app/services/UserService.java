@@ -74,7 +74,11 @@ public class UserService {
         return score;
     }
 
-    public int getDegreeOfSeparationNumber(User root, User target,Collection<User> visited){
+    public int getDegreeOfSeparationNumber(User root, User target){
+        return getDOSNumberHelper(root,target, new ArrayList<>());
+    }
+
+    private int getDOSNumberHelper(User root, User target,Collection<User> visited){
         if (root.equals(target)){
             return 0;
         }
@@ -90,7 +94,7 @@ public class UserService {
         Collection<Integer> lengths = new ArrayList<>();
         for( User user : following){
             if (!visited.contains(user)){
-                int length = getDegreeOfSeparationNumber( user, target, visited);
+                int length = getDOSNumberHelper( user, target, visited);
                 if (length!=-1){
                     lengths.add(DOS + length);
                 }
