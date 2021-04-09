@@ -44,6 +44,11 @@ public class ReviewController {
             return String.format("redirect:/product/%s/review?nologin", id);
         }
         User loginUser = userRepo.findByName(principal.getName());
+        Product product = productRepo.findById(id);
+        if (loginUser != null && product != null && loginUser.hasReviewedProduct(product)) {
+            // should never occur unless they construct posts
+            return "redirect:/error";
+        }
         review.setUser(loginUser);
         review.setProduct(productRepo.findById(id));
         review.setId(null);
