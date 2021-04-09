@@ -112,6 +112,10 @@ public class User {
         return roles.stream().anyMatch(r -> r.getName().equals("ROLE_ADMIN"));
     }
 
+    public boolean hasReviewedProduct(Product product) {
+        return reviews.stream().anyMatch(r -> r.getProduct().equals(product));
+    }
+
     @Override
     public boolean equals(Object o){
         if (o == this) {
