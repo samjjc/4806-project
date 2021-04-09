@@ -89,7 +89,7 @@ public class ProductController {
         model.addAttribute("name", name);
 
         //add total page number and list of pages number
-        int totalPages = (int) Math.floor(productRepo.count()/pageable.getPageSize());
+        int totalPages = (int) Math.floor(productList.size()/pageable.getPageSize());
         model.addAttribute("totalPages", totalPages);
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(0, totalPages)
