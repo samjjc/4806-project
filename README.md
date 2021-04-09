@@ -40,13 +40,19 @@ With respect to the kanban, all milestone one and two issues have been completed
 - improved login, added sign up
 - added chain page, filtering, product images
 
-## Plan for Next Milestone
+## Milestone 3:
 
-Important features for the third milestone:
 - Jaccard distance
-- degress of separation
+- degrees of separation
 - homepage
 - add error pages
+- add user and admin (can add product) roles
+- make users only able to post one review per product
+- front ends for sorting and more sorting types for products and reviews
+- navigation bar
+- home page
+- search bar
+- logout button
 
 ## Database Schema
 
