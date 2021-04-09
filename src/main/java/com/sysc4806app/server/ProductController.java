@@ -56,15 +56,20 @@ public class ProductController {
         //if averageFollowRating sort then just do unsorted and sort after
         if(followOrder!=null){ pageable = PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(),Sort.unsorted()); }
 
+        int productListTotal = 0;
         if (name == null) { name = ""; }
         if (type != null && chain != null) {
             productList = productRepo.findByTypeAndChainAndNameContainsIgnoreCase(type, chain, name, pageable);
+            productListTotal = productRepo.findByTypeAndChainAndName(type, chain, name).size();
         } else if (type != null) {
             productList = productRepo.findByTypeAndNameContainsIgnoreCase(type, name, pageable);
+            productListTotal = productRepo.findByTypeAndName(type, name).size();
         } else if (chain != null) {
             productList = productRepo.findByChainAndNameContainsIgnoreCase(chain, name, pageable);
+            productListTotal = productRepo.findByChainAndName(chain, name).size();
         } else {
             productList = productRepo.findByNameContainsIgnoreCase(name, pageable);
+            productListTotal =productRepo.findByName(name).size();
         }
 
         //sort follow order
@@ -89,7 +94,7 @@ public class ProductController {
         model.addAttribute("name", name);
 
         //add total page number and list of pages number
-        int totalPages = (int) Math.floor(productList.size()/pageable.getPageSize());
+        int totalPages = (int) Math.floor(productListTotal/pageable.getPageSize());
         model.addAttribute("totalPages", totalPages);
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(0, totalPages)
