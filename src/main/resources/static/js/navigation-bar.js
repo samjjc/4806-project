@@ -37,8 +37,8 @@ class NavBar extends HTMLElement {
                 '<li class="ffr-nav-bar-right"><a class="ffr-nav-bar-text" href="/user/' + this.user + '">' + this.user + '</a></li>';
         }
         html += '<form action="/productlist">' +
-            '<input class="ffr-input" type="text" placeholder="Find a product..." name="name">' +
-            '<button class="ffr-button" type="submit"><i class="fa fa-search"></i></button></form>';
+            '<input class="ffr-input" style="float: left;" type="text" placeholder="Find a product..." name="name">' +
+            '<button class="ffr-button" style="margin-top: 4px; float: left;" type="submit"><i class="fa fa-search"></i></button></form>';
         this.innerHTML = html + '</ul>';
     }
 }
