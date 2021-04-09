@@ -108,6 +108,10 @@ public class User {
 
     public void setFollowers(Collection<User> followers) { this.followers = followers; }
 
+    public boolean isAdmin() {
+        return roles.stream().anyMatch(r -> r.getName().equals("ROLE_ADMIN"));
+    }
+
     @Override
     public boolean equals(Object o){
         if (o == this) {
