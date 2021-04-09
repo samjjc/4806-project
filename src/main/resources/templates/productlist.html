@@ -55,5 +55,10 @@
         <td>Chain: <span th:text="${product.chain.text}"></span></td><br/>
         <br/>
     </tr>
+    <tr  th:if="${totalPages > 0}" th:each="pageNumber : ${pageNumbers}">
+        <td><a th:href="@{/productlist(name=${name},type=${type},chain=${chain}, sort=${sort}, page=${pageNumber})}"
+           th:text="${pageNumber}"
+           th:class="${pageNumber==currentPage} ? active"></a></td>
+    </tr>
 </tbody>
 </html>

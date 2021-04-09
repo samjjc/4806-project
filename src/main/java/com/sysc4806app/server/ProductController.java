@@ -21,6 +21,8 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 public class ProductController {
@@ -85,6 +87,17 @@ public class ProductController {
         model.addAttribute("type", type);
         model.addAttribute("chain", chain);
         model.addAttribute("name", name);
+
+        //add total page number and list of pages number
+        int totalPages = (int) Math.floor(productRepo.count()/pageable.getPageSize());
+        model.addAttribute("totalPages", totalPages);
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(0, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+        model.addAttribute("currentPage", pageable.getPageNumber());
 
         if(followOrder !=null){
             model.addAttribute("sort", followOrder.getProperty() + "," + followOrder.getDirection());
