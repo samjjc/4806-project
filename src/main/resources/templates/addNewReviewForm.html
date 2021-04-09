@@ -8,11 +8,12 @@
 </head>
 <body>
 <nav-bar th:attr="user=${navUser}"></nav-bar>
-<h1>Add a Review</h1>
+<h1 th:if="${restOperation == 'put'}">Update Existing Review</h1>
+<h1 th:unless="${restOperation == 'put'}">Add a Review</h1>
 <div th:if="${param.nologin}">
     Cannot post review if not logged in.
 </div>
-<form action="#" th:action="@{/product/__${id}__/review}" th:object="${review}" method="post">
+<form action="#" th:action="@{/product/__${id}__/review}" th:object="${review}" th:method="${restOperation}">
     <p>Rating: <input type="number" th:field="*{rating}" /></p>
     <p th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}">Rating Error</p>
     <textarea name="Review" th:field="*{text}" cols="50" rows="10"></textarea>
