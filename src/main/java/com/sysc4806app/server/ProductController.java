@@ -7,6 +7,7 @@ import com.sysc4806app.repos.UserRepo;
 import com.sysc4806app.services.ProductService;
 import com.sysc4806app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -48,6 +49,7 @@ public class ProductController {
                                   @RequestParam(name="name", required=false) String name,
                                   Pageable pageable, Model model, Principal principal) {
         List<Product> productList;
+        Page<Product> page;
         // sadly findByTypeAndChain does not handle null values
         // we could switch these to different endpoints if needed
         Sort.Order followOrder = pageable.getSort().getOrderFor("averageFollowRating");
@@ -58,15 +60,15 @@ public class ProductController {
 
         if (name == null) { name = ""; }
         if (type != null && chain != null) {
-            productList = productRepo.findByTypeAndChainAndNameContainsIgnoreCase(type, chain, name, pageable);
+            page = productRepo.findByTypeAndChainAndNameContainsIgnoreCase(type, chain, name, pageable);
         } else if (type != null) {
-            productList = productRepo.findByTypeAndNameContainsIgnoreCase(type, name, pageable);
+            page = productRepo.findByTypeAndNameContainsIgnoreCase(type, name, pageable);
         } else if (chain != null) {
-            productList = productRepo.findByChainAndNameContainsIgnoreCase(chain, name, pageable);
+            page = productRepo.findByChainAndNameContainsIgnoreCase(chain, name, pageable);
         } else {
-            productList = productRepo.findByNameContainsIgnoreCase(name, pageable);
+            page = productRepo.findByNameContainsIgnoreCase(name, pageable);
         }
-
+        productList = page.getContent();
         //sort follow order
         if(followOrder!=null && principal!=null){
             User loggedIn = userRepo.findByName(principal.getName());
@@ -89,10 +91,8 @@ public class ProductController {
         model.addAttribute("name", name);
 
         //add total page number and list of pages number
-        int totalPages = 0;
-        if (productList != null)
-            totalPages = (int) Math.floor(productList.size()/pageable.getPageSize());
-        model.addAttribute("totalPages", totalPages);
+        int totalPages = page.getTotalPages() - 1;
+        model.addAttribute("totalPages", page.getTotalPages());
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(0, totalPages)
                     .boxed()
