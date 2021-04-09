@@ -12,6 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.security.Principal;
+import java.util.ArrayList;
+
 @Controller
 public class UserController {
 
@@ -45,6 +48,11 @@ public class UserController {
             throw new UserNotFoundException();
         }
         User viewer = userRepo.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
+        String dos = null;
+        if(viewer!=null){
+            dos = Integer.toString(userService.getDegreeOfSeparationNumber(viewer,user));
+        }
+        model.addAttribute("dos",dos);
         model.addAttribute("user",user );
         model.addAttribute("viewer", viewer);
         return "user";

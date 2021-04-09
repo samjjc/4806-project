@@ -12,8 +12,9 @@ var productServices = {
             row = $(this);
             var user = row.find("td.row-user").text();
             var text = row.find("td.row-text").text();
+            var dos = row.find("td.row-dos").text();
             var rating = row.find("td.row-rating").text();
-            $('body').append('<review-pane user="' + user + '" rating="' + rating +'">' + text + '</review-pane>');
+            $('body').append('<review-pane user="' + user + '" rating="' + rating + '" dos="' + dos + '">' + text + '</review-pane>');
         });
         if (empty) {
             $('body').append('<h4 class="content">No reviews. Be the first!</h4>');

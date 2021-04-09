@@ -73,4 +73,39 @@ public class UserService {
         }
         return score;
     }
+
+    public int getDegreeOfSeparationNumber(User root, User target){
+        return getDOSNumberHelper(root,target, new ArrayList<>());
+    }
+
+    private int getDOSNumberHelper(User root, User target,Collection<User> visited){
+        if (root.equals(target)){
+            return 0;
+        }
+
+        int DOS = 1;
+        visited.add(root);
+        Collection<User> following = root.getFollowing();
+
+        if (following.isEmpty()){
+            return -1;
+        }
+
+        Collection<Integer> lengths = new ArrayList<>();
+        for( User user : following){
+            if (!visited.contains(user)){
+                int length = getDOSNumberHelper( user, target, visited);
+                if (length!=-1){
+                    lengths.add(DOS + length);
+                }
+            }
+        }
+
+        if( lengths.isEmpty()){
+            return -1;
+        }else{
+            return Collections.min(lengths);
+        }
+
+    }
 }

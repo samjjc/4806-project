@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -121,6 +122,21 @@ public class ProductController {
             reviews = productService.getProductReviews(id, sort, dir);
         }
 
+        //Create list of degress of separation numbers
+        List<String> degreesOfSeparation = new ArrayList<>();
+        if (principal != null){
+            User current = userRepo.findByName(principal.getName());
+            for (Review review : reviews){
+                if (review.getUser()!=null){
+                    degreesOfSeparation.add(Integer.toString(userService.getDegreeOfSeparationNumber(current,review.getUser())));
+                }else{
+                    degreesOfSeparation.add("");
+                }
+
+            }
+        }
+
+        model.addAttribute("dos",degreesOfSeparation);
         model.addAttribute("rating", String.format("%.1f", rating));
         model.addAttribute("reviews", reviews);
         model.addAttribute("product", product);

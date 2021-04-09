@@ -49,15 +49,17 @@
                 <tr>
                     <td>User</td>
                     <td>Rating</td>
+                    <td>Dos</td>
                     <td>Comment</td>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:if="${reviews.isEmpty()}">
-                    <td colspan="3"> No reviews. Be the first!</td>
+                    <td colspan="4"> No reviews. Be the first!</td>
                 </tr>
-                <tr class="row" th:unless="${reviews.isEmpty()}" th:each="review : ${reviews}">
-                    <td class="row-user" th:text="${review.getUser() != null} ? ${review.getUser().getName()} : 'Unknown'"></td>
+                <tr class="row" th:unless="${reviews.isEmpty()}" th:each="review,iter : ${reviews}">
+                    <td class="row-user" ><a th:href="${'/user/'+ review.getUser()}" th:if="${review.getUser() != null}"><span  th:text="${review.getUser() != null} ? ${review.getUser().getName()} : 'Unknown'"></span></a></td>
+                    <td class="row-dos" th:text="${review.getUser() != null && !dos.isEmpty()} ? ${dos.get(iter.index)} : 'Unknown'"></td>
                     <td class="row-rating" th:text="${review.getRating()}"></td>
                     <td class="row-text" th:text="${review.getText()}"></td>
                 </tr>

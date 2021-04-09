@@ -1,7 +1,7 @@
 class ReviewPane extends HTMLElement {
 
     static get observedAttributes() {
-        return ['user', 'rating',];
+        return ['user', 'rating','dos',];
     }
 
     constructor() {
@@ -21,13 +21,15 @@ class ReviewPane extends HTMLElement {
             this.rating = newValue;
         }else if (name === 'user') {
             this.user = newValue;
+        }else if (name === 'dos'){
+            this.dos = newValue;
         }
         this.render();
     }
 
     render() {
         this.innerHTML = '<div class="content white-background">' +
-            '<p>' + this.user + '</p>' +
+            '<a href="/user/'+this.user+'">'+'<p>' + this.user + ' --  separation: '+this.dos+'</p>' +'</a>' +
             '<star-rating rating=' + this.rating + '></star-rating>' +
             '<p>'+ this.text +'</p>' + '</div>'
     }
