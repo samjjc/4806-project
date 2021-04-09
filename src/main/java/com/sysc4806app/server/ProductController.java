@@ -74,6 +74,9 @@ public class ProductController {
                 return avg2.compareTo(avg1);
             });
         }
+        User user = userRepo.findByName(SecurityContextHolder.getContext().getAuthentication().getName());
+        boolean isAdmin = user != null && user.isAdmin();
+        model.addAttribute("isAdmin", isAdmin);
 
         model.addAttribute("products", productList);
         model.addAttribute("types", ProductType.values());

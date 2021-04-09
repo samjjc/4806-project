@@ -8,7 +8,7 @@
 </head>
 <tbody>
     <nav-bar th:attr="user=${navUser}"></nav-bar>
-    <a href="/product" class="ffr-button">Add new product</a><br><br/>
+    <a href="/product" th:if="${isAdmin}" class="ffr-button">Add new product</a><br><br/>
     <a href="/chains" class="ffr-button">Browse by Chain</a><br><br/>
 
     <div class="dropdown">
